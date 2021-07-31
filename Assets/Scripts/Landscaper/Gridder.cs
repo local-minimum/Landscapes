@@ -28,7 +28,7 @@ public class Gridder : LandscaperBase
                     geography.transform.position.y,
                     geography.transform.position.z - (z - halfHeight) * spacing
                 );
-                geography.AddNode(SpawnGeoNode(geography, pos));
+                geography.AddNodeUnsafe(SpawnGeoNode(geography, pos));
             }
         }
     }

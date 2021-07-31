@@ -5,13 +5,16 @@ using System.Linq;
 
 public class Geography : MonoBehaviour
 {
+    public bool showGeoNodeGizmos = true;
+    public bool showGeoNodeEdgeGizmos = true;
+    public bool showGeoNodeConnectionsGizmos = true;
 
     public float interStepPause = 1f;
 
     List<GeoNode> nodes = new List<GeoNode>();
     public List<LandscaperBase> creation = new List<LandscaperBase>();
 
-    public void AddNode(GeoNode node)
+    public void AddNodeUnsafe(GeoNode node)
     {
         node.gameObject.name = string.Format("GeoNode #{0}", nodes.Count);
         nodes.Add(node);

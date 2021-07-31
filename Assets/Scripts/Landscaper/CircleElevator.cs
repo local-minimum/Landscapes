@@ -17,7 +17,7 @@ public class CircleElevator : LandscaperBase
         for (int i=0; i<circles; i++)
         {
             var depth = elevations[Random.Range(0, elevations.Length)];
-            var point = RandomPointInRect(boundingRect);
+            var point = boundingRect.RandomPoint();
             var origin = geography.transform.position + new Vector3(point.x, 0, point.y);
             origin.y = 0;
             var sqRadius = Mathf.Pow(radiusDistribution.Evaluate(Random.value), 2);
@@ -49,12 +49,5 @@ public class CircleElevator : LandscaperBase
                 .Count();
             Debug.Log(string.Format("{0} nodes got {1} depth.", changed, depth));
         }
-    }
-
-    Vector2 RandomPointInRect(Rect r)
-    {
-        var x = Random.Range(r.xMin, r.xMax);
-        var z = Random.Range(r.yMin, r.yMax);
-        return new Vector2(x, z);
     }
 }
