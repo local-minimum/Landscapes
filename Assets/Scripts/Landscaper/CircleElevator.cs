@@ -54,7 +54,6 @@ public class CircleElevator : LandscaperBase
                     .GetNodes(node => { return node.transform.position.y < 0; })
                     .Count();
             float fraction = seaCount / nNodes;
-            Debug.Log(string.Format("{0} circles, sea fraction {1}", i + 1, fraction));
             if (i + 1 == circles && fraction < minSeaFraction) {
                 circles++;
             } else if (fraction > maxSeaFraction)
