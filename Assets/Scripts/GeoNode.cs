@@ -35,8 +35,6 @@ public class GeoNode : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = transform.position.y < 0 ? Color.blue : Color.green;
-        Gizmos.DrawSphere(transform.position, gizmoSize);
         Gizmos.color = Color.white;
         for (int i = 0, l = neighbours.Count; i < l; i++)
         {
@@ -48,6 +46,9 @@ public class GeoNode : MonoBehaviour
                 Gizmos.DrawLine(transform.position, neighbour.transform.position);
             }
         }
+        Gizmos.color = transform.position.y < 0 ? Color.blue : Color.green;
+        Gizmos.DrawSphere(transform.position, gizmoSize);
+
     }
 
 }
