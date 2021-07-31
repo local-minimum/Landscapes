@@ -11,11 +11,19 @@ public class Noiser : LandscaperBase
         for (int i=0, l=geography.NodeCount; i<l; i++)
         {
             var node = geography.GetNode(i);
-            node.transform.position += new Vector3(
-                Random.Range(-magnitude.x, magnitude.x),
+            var noise = new Vector3(
+                Random.Range(-magnitude.x/2, magnitude.x/2),
                 Random.Range(-magnitude.y, magnitude.y),
-                Random.Range(-magnitude.z, magnitude.z)
+                Random.Range(-magnitude.z/2, magnitude.z/2)
             );
+            if (node.transform.position.y < 0)
+            {
+                noise.y = -Mathf.Abs(noise.y);
+            } else
+            {
+                noise.y = Mathf.Abs(noise.y);
+            }
+            node.transform.position += noise;
         }
     }
 }

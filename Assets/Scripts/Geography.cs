@@ -20,6 +20,11 @@ public class Geography : MonoBehaviour
         nodes.Add(node);
     }
 
+    public void AddNode(GeoNode node, GeoNode knownNeighbour, float breakDistance)
+    {
+        AddNodeUnsafe(node);
+    }
+
     public int NodeCount {
         get {
             return nodes.Count;

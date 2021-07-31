@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 
 public class GeoNode : MonoBehaviour
 {
@@ -45,6 +47,23 @@ public class GeoNode : MonoBehaviour
         throw new System.ArgumentException("Not a neighbour", nameof(neighbour));
     }
 
+    public float avgPlanarDistance
+    {
+        get
+        {
+            if (neighbours.Count == 0)
+            {
+                throw new System.ArithmeticException("GeoNode lacks neighbours.");
+            }
+            Vector2 myPos = new Vector2(transform.position.x, transform.position.z);
+            return neighbours
+                .Select(node => {
+                    return Vector2.Distance(myPos, new Vector2(node.transform.position.x, node.transform.position.z));
+                })
+                .Sum() / neighbours.Count;
+        }
+    }
+
     private void OnDrawGizmos()
     {
         if (geography.showGeoNodeConnectionsGizmos)
@@ -78,4 +97,14 @@ public class GeoNode : MonoBehaviour
         }
     }
 
+    public static GeoNode Spawn(Geography geography, Vector3 position, float gizmoSize)
+    {
+        var go = new GameObject();
+        go.transform.SetParent(geography.transform);
+        go.transform.position = position;
+        var node = go.AddComponent<GeoNode>();
+        node.geography = geography;
+        node.gizmoSize = gizmoSize;
+        return node;
+    }
 }

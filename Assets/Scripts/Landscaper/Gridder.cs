@@ -28,20 +28,9 @@ public class Gridder : LandscaperBase
                     geography.transform.position.y,
                     geography.transform.position.z - (z - halfHeight) * spacing
                 );
-                geography.AddNodeUnsafe(SpawnGeoNode(geography, pos));
+                geography.AddNodeUnsafe(GeoNode.Spawn(geography, pos, spacing / 5f));
             }
         }
-    }
-
-    GeoNode SpawnGeoNode(Geography geography, Vector3 position)
-    {
-        var go = new GameObject();
-        go.transform.SetParent(geography.transform);
-        go.transform.position = position;
-        var node = go.AddComponent<GeoNode>();
-        node.geography = geography;
-        node.gizmoSize = spacing / 5f;
-        return node;
     }
 
     void ConnectGrid(Geography geography)
