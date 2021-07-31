@@ -8,7 +8,7 @@ public class Gridder : LandscaperBase
     public int height = 20;
     public float spacing = 1;
 
-    public override void Apply(Geography geography)
+    protected override void Landscape(Geography geography)
     {
         CreateGrid(geography);
         ConnectGrid(geography);

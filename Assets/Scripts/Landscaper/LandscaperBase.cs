@@ -5,5 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public abstract class LandscaperBase : MonoBehaviour
 {
-    public abstract void Apply(Geography geography);
+    [SerializeField]
+    public bool active = true;
+    abstract protected void Landscape(Geography geography);
+
+    public void Apply(Geography geography)
+    {
+        if (active) Landscape(geography);
+    }
 }
