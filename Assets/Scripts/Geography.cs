@@ -9,64 +9,30 @@ public class Geography : MonoBehaviour
     public float spacing = 1;
 
     List<GeoNode> nodes = new List<GeoNode>();
+    public List<LandscaperBase> creation = new List<LandscaperBase>();
 
-    private void Start()
+    public void AddNode(GeoNode node)
     {
-        CreateGrid();
-        ConnectGrid();
+        node.gameObject.name = string.Format("GeoNode #{0}", nodes.Count);
+        nodes.Add(node);
     }
 
-    void CreateGrid()
-    {
-        float halfWidth = width / 2.0f;
-        float halfHeight = height / 2.0f;
-        for (int x = 0; x<width; x++)
-        {
-            for (int z=0; z<height;z++)
-            {
-                Vector3 pos = new Vector3(
-                    transform.position.x - (x - halfWidth) * spacing,
-                    transform.position.y,
-                    transform.position.z - (z - halfHeight) * spacing
-                );
-                nodes.Add(SpawnGeoNode(pos));
-            }
+    public int NodeCount {
+        get {
+            return nodes.Count;
         }
     }
 
-    GeoNode SpawnGeoNode(Vector3 position)
+    public GeoNode GetNode(int idx)
     {
-        var go = new GameObject(string.Format("GeoNode #{0}", nodes.Count));
-        go.transform.SetParent(transform);
-        go.transform.position = position;
-        var node = go.AddComponent<GeoNode>();
-        node.geography = this;
-        node.gizmoSize = spacing / 5f;
-        return node;
+        return nodes[idx];
     }
 
-    void ConnectGrid()
+    private void Start()
     {
-        float connectLengthSq = 2.001f * spacing * spacing;
-        int nNodes = nodes.Count;
-        for (int i=0; i<nNodes; i++)
+        for (int i = 0, l=creation.Count; i<l;i++)
         {
-            GeoNode node = nodes[i];
-            List<GeoNode> neighbours = new List<GeoNode>();
-            for (int j=0; j<nNodes; j++)
-            {
-                if (i == j) continue;
-                if (Vector3.SqrMagnitude(nodes[j].transform.position - node.transform.position) < connectLengthSq)
-                {
-                    GeoNode other = nodes[j];
-                    if (other.transform.position.z < node.transform.position.z && other.transform.position.x < node.transform.position.x)
-                    {
-                        continue;
-                    }
-                    neighbours.Add(other);
-                }
-            }
-            node.SetNeighbours(neighbours);
+            creation[i].Apply(this);
         }
     }
 }

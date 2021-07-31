@@ -308,6 +308,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1838253588}
   - component: {fileID: 1838253589}
+  - component: {fileID: 1838253590}
+  - component: {fileID: 1838253591}
   m_Layer: 0
   m_Name: Geography
   m_TagString: Untagged
@@ -344,3 +346,32 @@ MonoBehaviour:
   width: 30
   height: 20
   spacing: 1
+  creation:
+  - {fileID: 1838253590}
+--- !u!114 &1838253590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838253587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93a0e028cbaf31b41858a87f06976b97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  width: 30
+  height: 20
+  spacing: 1
+--- !u!114 &1838253591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838253587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97067cca6e3950a43a0d5253d543c8ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
