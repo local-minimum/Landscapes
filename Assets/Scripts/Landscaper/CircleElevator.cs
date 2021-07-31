@@ -10,10 +10,13 @@ public class CircleElevator : LandscaperBase
     public float[] elevations = { -1, -2, -4, -6 };
     public AnimationCurve radiusDistribution;
     public PointFilter pointFilter;
+    public float minSeaFraction = 0f;
+    public float maxSeaFraction = 1f;
 
     protected override void Landscape(Geography geography)
     {
         var boundingRect = geography.BoundingRect;
+        var nNodes = geography.NodeCount;
         for (int i=0; i<circles; i++)
         {
             var depth = elevations[Random.Range(0, elevations.Length)];
@@ -47,7 +50,17 @@ public class CircleElevator : LandscaperBase
                     return node;
                 })
                 .Count();
-            Debug.Log(string.Format("{0} nodes got {1} depth.", changed, depth));
-        }
+            float seaCount = geography
+                    .GetNodes(node => { return node.transform.position.y < 0; })
+                    .Count();
+            float fraction = seaCount / nNodes;
+            Debug.Log(string.Format("{0} circles, sea fraction {1}", i + 1, fraction));
+            if (i + 1 == circles && fraction < minSeaFraction) {
+                circles++;
+            } else if (fraction > maxSeaFraction)
+            {
+                circles = i;
+            }
+        }        
     }
 }

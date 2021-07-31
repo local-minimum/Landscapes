@@ -401,7 +401,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Perturb in plane
   active: 1
-  magnitude: {x: 0.4, y: 0.1, z: 0.4}
+  magnitude: {x: 0.4, y: 0.3, z: 0.4}
 --- !u!114 &1838253592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -416,7 +416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Make depths
   active: 1
-  circles: 40
+  circles: 60
   elevations:
   - -1
   - -2
@@ -447,6 +447,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   pointFilter: 0
+  minSeaFraction: 0.6
+  maxSeaFraction: 0.75
 --- !u!114 &1838253593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,6 +494,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   pointFilter: 2
+  minSeaFraction: 0
+  maxSeaFraction: 1
 --- !u!114 &1838253594
 MonoBehaviour:
   m_ObjectHideFlags: 0
