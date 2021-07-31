@@ -325,6 +325,7 @@ GameObject:
   - component: {fileID: 1838253589}
   - component: {fileID: 1838253590}
   - component: {fileID: 1838253591}
+  - component: {fileID: 1838253592}
   m_Layer: 0
   m_Name: Geography
   m_TagString: Untagged
@@ -358,12 +359,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5f8759784b23f642ac43a219fb1bb4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 30
-  height: 20
-  spacing: 1
+  interStepPause: 1
   creation:
   - {fileID: 1838253590}
   - {fileID: 1838253591}
+  - {fileID: 1838253592}
 --- !u!114 &1838253590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,5 +392,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97067cca6e3950a43a0d5253d543c8ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   magnitude: {x: 0.2, y: 0.2, z: 0.2}
+--- !u!114 &1838253592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838253587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 174872dfa371a53458f00fa9c025a8c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  active: 1
+  depthCircles: 20
+  depths:
+  - -1
+  - -2
+  - -4
+  - -6
+  radiusDistribution:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 2
+      inSlope: 8
+      outSlope: 8
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 10
+      inSlope: 8
+      outSlope: 8
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

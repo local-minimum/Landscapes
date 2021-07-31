@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Geography : MonoBehaviour
 {
-    public int width = 30;
-    public int height = 20;
-    public float spacing = 1;
+
+    public float interStepPause = 1f;
 
     List<GeoNode> nodes = new List<GeoNode>();
     public List<LandscaperBase> creation = new List<LandscaperBase>();
@@ -28,11 +28,61 @@ public class Geography : MonoBehaviour
         return nodes[idx];
     }
 
+    public GeoNode GetNode(Vector2 pos)
+    {
+        return nodes[0];
+    }
+
+    public IEnumerable<GeoNode> GetNodes(System.Func<GeoNode, bool> filter)
+    {
+        return nodes.Where(filter);
+    }
+
+    public Rect BoundingRect
+    {
+        get
+        {
+            float minX = float.MaxValue;
+            float maxX = float.MinValue;
+            float minZ = float.MaxValue;
+            float maxZ = float.MinValue;
+
+            nodes.ForEach(node => {
+                var x = node.transform.position.x;
+                var z = node.transform.position.z;
+                minX = Mathf.Min(x, minX);
+                maxX = Mathf.Max(x, maxX);
+                minZ = Mathf.Min(z, minZ);
+                maxZ = Mathf.Max(z, maxZ);
+            });
+            return new Rect(minX, minZ, maxX - minX, maxZ - minZ);
+        }
+    }
+
     private void Start()
     {
-        for (int i = 0, l=creation.Count; i<l;i++)
+        StartCoroutine(BuildWorld());
+    }
+
+    IEnumerator<WaitForSeconds> BuildWorld()
+    {
+        for (int i = 0, l = creation.Count; i < l; i++)
         {
             creation[i].Apply(this);
+            yield return new WaitForSeconds(interStepPause);
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        var rect = BoundingRect;
+        var center = rect.center;
+        var size = rect.size;
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireCube(
+            new Vector3(center.x, transform.position.y, center.y),
+            new Vector3(size.x, 0, size.y)
+        );
     }
 }
