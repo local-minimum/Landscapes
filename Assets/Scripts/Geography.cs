@@ -28,11 +28,6 @@ public class Geography : MonoBehaviour
         return nodes[idx];
     }
 
-    public GeoNode GetNode(Vector2 pos)
-    {
-        return nodes[0];
-    }
-
     public IEnumerable<GeoNode> GetNodes(System.Func<GeoNode, bool> filter)
     {
         return nodes.Where(filter);

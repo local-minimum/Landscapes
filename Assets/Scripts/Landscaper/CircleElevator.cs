@@ -5,22 +5,35 @@ using System.Linq;
 
 public class CircleElevator : LandscaperBase
 {
-    public int depthCircles = 20;
-    public float[] depths = { -10, -50, -200, -500 };
-    public AnimationCurve radiusDistribution;    
+    public enum PointFilter { Any, Water, Land };
+    public int circles = 40;
+    public float[] elevations = { -1, -2, -4, -6 };
+    public AnimationCurve radiusDistribution;
+    public PointFilter pointFilter;
 
     protected override void Landscape(Geography geography)
     {
         var boundingRect = geography.BoundingRect;
-        for (int i=0; i<depthCircles; i++)
+        for (int i=0; i<circles; i++)
         {
-            var depth = depths[Random.Range(0, depths.Length)];
+            var depth = elevations[Random.Range(0, elevations.Length)];
             var point = RandomPointInRect(boundingRect);
             var origin = geography.transform.position + new Vector3(point.x, 0, point.y);
             origin.y = 0;
             var sqRadius = Mathf.Pow(radiusDistribution.Evaluate(Random.value), 2);
             System.Func<GeoNode, bool> filter = node => {
                 var pos = node.transform.position;
+                switch (pointFilter)
+                {
+                    case PointFilter.Any:
+                        break;
+                    case PointFilter.Land:
+                        if (pos.y < 0) return false;
+                        break;
+                    case PointFilter.Water:
+                        if (pos.y >= 0) return false;
+                        break;
+                }
                 pos.y = 0;
                 return Vector3.SqrMagnitude(pos - origin) < sqRadius;
             };

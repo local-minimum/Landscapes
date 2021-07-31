@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
 public abstract class LandscaperBase : MonoBehaviour
 {
-    [SerializeField]
+
+    public string description;
     public bool active = true;
     abstract protected void Landscape(Geography geography);
 
