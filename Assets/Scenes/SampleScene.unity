@@ -330,6 +330,7 @@ GameObject:
   - component: {fileID: 1838253594}
   - component: {fileID: 1838253595}
   - component: {fileID: 1838253596}
+  - component: {fileID: 1838253597}
   m_Layer: 0
   m_Name: Geography
   m_TagString: Untagged
@@ -374,6 +375,7 @@ MonoBehaviour:
   - {fileID: 1838253593}
   - {fileID: 1838253594}
   - {fileID: 1838253595}
+  - {fileID: 1838253597}
   - {fileID: 1838253591}
   - {fileID: 1838253596}
 --- !u!114 &1838253590
@@ -422,7 +424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Make depths
   active: 1
-  circles: 60
+  circles: 10
   elevations:
   - -1
   - -2
@@ -453,7 +455,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   pointFilter: 3
-  minSeaFraction: 0.6
+  minSeaFraction: 0.4
   maxSeaFraction: 0.75
   internalCircles: 1
 --- !u!114 &1838253593
@@ -601,3 +603,17 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   allowCrossSeaSurfaceInfluence: 1
+--- !u!114 &1838253597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838253587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 888e553f026edfe41a45ebd50c1151a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: 
+  active: 1
