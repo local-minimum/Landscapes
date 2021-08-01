@@ -329,6 +329,7 @@ GameObject:
   - component: {fileID: 1838253593}
   - component: {fileID: 1838253594}
   - component: {fileID: 1838253595}
+  - component: {fileID: 1838253596}
   m_Layer: 0
   m_Name: Geography
   m_TagString: Untagged
@@ -364,7 +365,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showGeoNodeGizmos: 1
   showGeoNodeEdgeGizmos: 0
-  showGeoNodeConnectionsGizmos: 0
+  showGeoNodeConnectionsGizmos: 1
+  gizmoSize: 1.88
   interStepPause: 0.1
   creation:
   - {fileID: 1838253590}
@@ -373,6 +375,7 @@ MonoBehaviour:
   - {fileID: 1838253594}
   - {fileID: 1838253595}
   - {fileID: 1838253591}
+  - {fileID: 1838253596}
 --- !u!114 &1838253590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,3 +560,44 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1838253596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838253587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65fa4790a240b90438fa2161d041233c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: 
+  active: 1
+  smoothActionProbability: 0.6
+  actionDeltaThreshold: 0.5
+  averageAttraction:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.4
+      inSlope: 1.4999824
+      outSlope: 1.4999824
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.029982364
+    - serializedVersion: 3
+      time: 1
+      value: 0.9
+      inSlope: 0.7728347
+      outSlope: 0.7728347
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.058201075
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  allowCrossSeaSurfaceInfluence: 1

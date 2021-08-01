@@ -110,14 +110,14 @@ public class GeoNode : MonoBehaviour
         if (geography.showGeoNodeGizmos)
         {
             Gizmos.color = transform.position.y < 0 ? Color.blue : Color.green;
-            Gizmos.DrawSphere(transform.position, gizmoSize);
+            Gizmos.DrawSphere(transform.position, gizmoSize * geography.gizmoSize);
         }
         if (geography.showGeoNodeEdgeGizmos)
         {
             Gizmos.color = Color.cyan;
             if (topology == Topology.Edge)
             {
-                Gizmos.DrawWireCube(transform.position, Vector3.one * gizmoSize);
+                Gizmos.DrawWireCube(transform.position, Vector3.one * gizmoSize * geography.gizmoSize);
             }
         }
     }

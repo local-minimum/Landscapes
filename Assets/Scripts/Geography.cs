@@ -9,6 +9,8 @@ public class Geography : MonoBehaviour
     public bool showGeoNodeEdgeGizmos = true;
     public bool showGeoNodeConnectionsGizmos = true;
 
+    [Range(0.5f, 4)]
+    public float gizmoSize = 1f;
     public float interStepPause = 1f;
 
     List<GeoNode> nodes = new List<GeoNode>();

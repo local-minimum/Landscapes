@@ -7,7 +7,7 @@ public class Islander : LandscaperBase
 {
     public int[] sizes = new int[] { 1, 1, 2, 3, 3, 3, 4, 5 };
     public int islands = 20;
-    public AnimationCurve heightDistribution;
+    public AnimationCurve heightDistribution;    
 
     protected override void Landscape(Geography geography)
     {
