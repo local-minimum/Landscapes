@@ -47,7 +47,9 @@ public class Gridder : LandscaperBase
                 GeoNode other = geography.GetNode(j);
                 if (Vector3.SqrMagnitude(other.transform.position - node.transform.position) < connectLengthSq)
                 {
-                    if (other.transform.position.z < node.transform.position.z && other.transform.position.x < node.transform.position.x)
+                    var dZ = other.transform.position.z - node.transform.position.z;
+                    var dX = other.transform.position.x - node.transform.position.x;
+                    if (dX != 0 && dZ != 0 && Mathf.Sign(dX) == Mathf.Sign(dZ))
                     {
                         continue;
                     }
