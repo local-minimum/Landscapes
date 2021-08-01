@@ -194,11 +194,9 @@ public class GeoNode : MonoBehaviour
         {
             if (Mathf.Abs(neighbourAngles[i] - a) % 360 < angleTolerance)
             {
-                Debug.Log(string.Format("{4} ({5}): {0} - {1} | {2} < {3}", neighbourAngles[i], a, Mathf.Abs(neighbourAngles[i] - a) % 360, angleTolerance, name, direction));
                 return neighbours[i];
             }
         }
-        Debug.Log(string.Format("{0}: No neighbour {1}", name, direction));
         return null;
     }
 

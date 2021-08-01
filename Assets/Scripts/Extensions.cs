@@ -10,6 +10,14 @@ public static class Extensions
         return new Vector2(x, y);
     }
 
+    public static bool IsCardinal(this GeoNode.Direction dir)
+    {
+        return dir == GeoNode.Direction.E
+            || dir == GeoNode.Direction.W
+            || dir == GeoNode.Direction.N
+            || dir == GeoNode.Direction.S;
+    }
+
     public static GeoNode.Direction[] AllowedRotations(this GeoNode.Direction dir, GeoNode.Rotation rotation)
     {
         switch (rotation) {

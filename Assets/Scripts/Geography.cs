@@ -20,7 +20,7 @@ public class Geography : MonoBehaviour
         nodes.Add(node);
     }
 
-    public void AddNode(GeoNode node, GeoNode knownNeighbour, float breakDistance)
+    public void AddNode(GeoNode node, GeoNode knownNeighbour, float breakDistance, GeoNode.Direction filterEdges)
     {
         AddNodeUnsafe(node);        
         var trail = new List<GeoNode>();
@@ -33,25 +33,27 @@ public class Geography : MonoBehaviour
             while (!trail.Contains(neighbour))
             {
                 j++;
-                Debug.Log(string.Format("{0}: Adding {1} {2}", node.name, neighbour.name, dir));
+                // Debug.Log(string.Format("{0}: Adding {1} {2}", node.name, neighbour.name, dir));
                                 
                 trail.Add(neighbour);
                 var nextNeighbour = neighbour.GetRotationNeighbour(rotations[i], dir);
-                if (nextNeighbour == null)
+                if (nextNeighbour == null || nextNeighbour.PlanarDistance(node) > breakDistance)
                 {
-                    Debug.Log(string.Format("{0}: Neighbour {1} has no more that rotates {2}", node.name, neighbour.name, rotations[i]));
-                    node.AddNeighbour(neighbour);
+                    /*
+                    if (nextNeighbour == null)
+                    {
+                        Debug.Log(string.Format("{0}: Neighbour {1} has no more that rotates {2}", node.name, neighbour.name, rotations[i]));
+                    } else
+                    {
+                        Debug.Log(string.Format("{0}: Too far from {1}'s neighbour {2} to be neighbours", node.name, neighbour.name, nextNeighbour.name));
+                    } 
+                    */
+                    if (filterEdges.HasFlag(GeoNode.DirectionFromNodes(node, neighbour))) node.AddNeighbour(neighbour);
                     break;
                 }
 
-                if (nextNeighbour.PlanarDistance(node) > breakDistance)
-                {
-                    Debug.Log(string.Format("{0}: Too far from {1}'s neighbour {2} to be neighbours", node.name, neighbour.name, nextNeighbour.name));
-                    node.AddNeighbour(neighbour);
-                    break;
-                }
                 dir = GeoNode.DirectionFromNodes(neighbour, nextNeighbour);
-                node.AddNeighbour(neighbour);
+                if (filterEdges.HasFlag(GeoNode.DirectionFromNodes(node, neighbour))) node.AddNeighbour(neighbour);
                 neighbour = nextNeighbour;
                 if (j > 20)
                 {
