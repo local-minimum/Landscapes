@@ -452,7 +452,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  pointFilter: 0
+  pointFilter: 3
   minSeaFraction: 0.6
   maxSeaFraction: 0.75
   internalCircles: 1

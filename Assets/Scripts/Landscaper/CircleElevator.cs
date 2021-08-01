@@ -5,7 +5,7 @@ using System.Linq;
 
 public class CircleElevator : LandscaperBase
 {
-    public enum PointFilter { Any, Water, Land };
+    public enum PointFilter { Any, Water, Land, ZeroOrWater };
     public int circles = 40;
     public float[] elevations = { -1, -2, -4, -6 };
     public AnimationCurve radiusDistribution;
@@ -31,6 +31,9 @@ public class CircleElevator : LandscaperBase
                 switch (pointFilter)
                 {
                     case PointFilter.Any:
+                        break;
+                    case PointFilter.ZeroOrWater:
+                        if (pos.y > 0) return false;
                         break;
                     case PointFilter.Land:
                         if (pos.y < 0) return false;
