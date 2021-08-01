@@ -328,6 +328,7 @@ GameObject:
   - component: {fileID: 1838253592}
   - component: {fileID: 1838253593}
   - component: {fileID: 1838253594}
+  - component: {fileID: 1838253595}
   m_Layer: 0
   m_Name: Geography
   m_TagString: Untagged
@@ -362,14 +363,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showGeoNodeGizmos: 1
-  showGeoNodeEdgeGizmos: 1
-  showGeoNodeConnectionsGizmos: 1
-  interStepPause: 1
+  showGeoNodeEdgeGizmos: 0
+  showGeoNodeConnectionsGizmos: 0
+  interStepPause: 0.1
   creation:
   - {fileID: 1838253590}
   - {fileID: 1838253592}
   - {fileID: 1838253593}
   - {fileID: 1838253594}
+  - {fileID: 1838253595}
   - {fileID: 1838253591}
 --- !u!114 &1838253590
 MonoBehaviour:
@@ -515,3 +517,43 @@ MonoBehaviour:
   active: 1
   gridder: {fileID: 1838253590}
   connectionTolerance: 2
+--- !u!114 &1838253595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838253587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc20863d00047b46bfd1aad5273fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: 
+  active: 1
+  sizes: 0100000001000000020000000300000003000000030000000400000005000000
+  islands: 20
+  heightDistribution:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

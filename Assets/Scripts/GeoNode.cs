@@ -179,6 +179,12 @@ public class GeoNode : MonoBehaviour
         return ret;
     }
 
+    public IEnumerable<GeoNode> GetNeighbours(System.Func<GeoNode, GeoNode, bool> filter)
+    {
+        return neighbours.Where(node => filter(this, node));
+    }
+
+
     public GeoNode GetNeighbour(Direction direction, float angleTolerance = 5)
     {        
         var neighbourAngles = neighbours
