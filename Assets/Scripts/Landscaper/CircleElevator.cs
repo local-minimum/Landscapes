@@ -12,6 +12,7 @@ public class CircleElevator : LandscaperBase
     public PointFilter pointFilter;
     public float minSeaFraction = 0f;
     public float maxSeaFraction = 1f;
+    public bool internalCircles = false;
 
     protected override void Landscape(Geography geography)
     {
@@ -20,10 +21,11 @@ public class CircleElevator : LandscaperBase
         for (int i=0; i<circles; i++)
         {
             var depth = elevations[Random.Range(0, elevations.Length)];
-            var point = boundingRect.RandomPoint();
+            var radius = radiusDistribution.Evaluate(Random.value);
+            var point = internalCircles ? boundingRect.RandomPoint(radius) : boundingRect.RandomPoint();
             var origin = geography.transform.position + new Vector3(point.x, 0, point.y);
             origin.y = 0;
-            var sqRadius = Mathf.Pow(radiusDistribution.Evaluate(Random.value), 2);
+            var sqRadius = Mathf.Pow(radius, 2);
             System.Func<GeoNode, bool> filter = node => {
                 var pos = node.transform.position;
                 switch (pointFilter)

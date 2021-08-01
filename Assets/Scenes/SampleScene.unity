@@ -370,6 +370,7 @@ MonoBehaviour:
   - {fileID: 1838253592}
   - {fileID: 1838253593}
   - {fileID: 1838253594}
+  - {fileID: 1838253591}
 --- !u!114 &1838253590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,6 +450,7 @@ MonoBehaviour:
   pointFilter: 0
   minSeaFraction: 0.6
   maxSeaFraction: 0.75
+  internalCircles: 1
 --- !u!114 &1838253593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,6 +498,7 @@ MonoBehaviour:
   pointFilter: 2
   minSeaFraction: 0
   maxSeaFraction: 1
+  internalCircles: 0
 --- !u!114 &1838253594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,4 +513,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Edge is land
   active: 1
+  gridder: {fileID: 1838253590}
   connectionTolerance: 2

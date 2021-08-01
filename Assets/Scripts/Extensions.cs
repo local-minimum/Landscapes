@@ -10,6 +10,14 @@ public static class Extensions
         return new Vector2(x, y);
     }
 
+    public static Vector2 RandomPoint(this Rect r, float padding)
+    {
+        var x = Random.Range(r.xMin + padding, r.xMax - padding);
+        var y = Random.Range(r.yMin + padding, r.yMax - padding);
+        return new Vector2(x, y);
+
+    }
+
     public static bool IsCardinal(this GeoNode.Direction dir)
     {
         return dir == GeoNode.Direction.E
