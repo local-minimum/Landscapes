@@ -64,6 +64,30 @@ public static class Extensions
         return -1;
     }
 
+    public static float Angle(this GeoNode.Direction dir, GeoNode.Direction other)
+    {
+        var a = dir.AsOrdinal();
+        var b = other.AsOrdinal();
+        var d1 = a - b;
+        var d2 = b - a;
+        if (d1 < 0) d1 += 8;
+        if (d2 < 0) d2 += 8;
+        return Mathf.Min(d1, d2) * 45f;
+    }
+
+    public static List<GeoNode.Direction> WithNeighbours(this GeoNode.Direction dir, int flanking)
+    {
+        var ordinal = dir.AsOrdinal();
+        var directions = new List<GeoNode.Direction>();
+        for (int i=-flanking; i<=flanking; i++)
+        {
+            var idx = i + ordinal;
+            if (idx < 0) idx += 8;
+            directions.Add(Directions[idx % 8]);
+        }
+        return directions;
+    }
+
     public static GeoNode.Direction Inverted(this GeoNode.Direction dir)
     {
         var ordinal = dir.AsOrdinal();

@@ -79,6 +79,13 @@ public class Geography : MonoBehaviour
         return nodes[idx];
     }
 
+    public GeoNode GetClosestNode(Vector2 planarPosition)
+    {
+        return nodes
+            .OrderBy(n => Vector2.SqrMagnitude(n.PlanarPosition - planarPosition))
+            .FirstOrDefault();
+    }
+
     public IEnumerable<GeoNode> GetNodes(System.Func<GeoNode, bool> filter)
     {
         return nodes.Where(filter);

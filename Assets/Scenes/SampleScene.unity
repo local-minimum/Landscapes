@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showGeoNodeGizmos: 1
-  showGeoNodeEdgeGizmos: 0
+  showGeoNodeEdgeGizmos: 1
   showGeoNodeConnectionsGizmos: 1
   gizmoSize: 1.88
   interStepPause: 0.1
@@ -373,9 +373,9 @@ MonoBehaviour:
   - {fileID: 1838253590}
   - {fileID: 1838253592}
   - {fileID: 1838253593}
-  - {fileID: 1838253594}
   - {fileID: 1838253595}
   - {fileID: 1838253597}
+  - {fileID: 1838253594}
   - {fileID: 1838253591}
   - {fileID: 1838253596}
 --- !u!114 &1838253590
@@ -457,7 +457,7 @@ MonoBehaviour:
   pointFilter: 3
   minSeaFraction: 0.4
   maxSeaFraction: 0.75
-  internalCircles: 0
+  internalCircles: 1
 --- !u!114 &1838253593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -618,3 +618,53 @@ MonoBehaviour:
   description: 
   active: 1
   straitProbability: 1
+  sourceLocationWeight: 0.5
+  flexibility: 2
+  angleCost:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 180
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  heightCost:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 3
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
