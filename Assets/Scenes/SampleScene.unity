@@ -457,7 +457,7 @@ MonoBehaviour:
   pointFilter: 3
   minSeaFraction: 0.4
   maxSeaFraction: 0.75
-  internalCircles: 1
+  internalCircles: 0
 --- !u!114 &1838253593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,7 +521,7 @@ MonoBehaviour:
   description: Edge is land
   active: 1
   gridder: {fileID: 1838253590}
-  connectionTolerance: 2
+  connectionTolerance: 1.67
 --- !u!114 &1838253595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,3 +617,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: 
   active: 1
+  straitProbability: 1

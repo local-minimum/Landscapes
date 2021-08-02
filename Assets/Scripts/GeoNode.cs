@@ -6,44 +6,69 @@ using System.Linq;
 
 public class GeoNode : MonoBehaviour
 {
-    public enum Direction { E, NE, N, NW, W, SW, S, SE, NONE };
+    public enum Direction {
+        E = 1,
+        NE = 2,
+        N = 4,
+        NW = 8,
+        W = 16,
+        SW = 32,
+        S = 64,
+        SE = 128,
+        NONE = 0
+    };
+    
     public enum Rotation { CW, CCW };
-
+    
     public static Direction DirectionFromNodes(GeoNode from, GeoNode to, float angleTolerance = 5)
     {
-        var offset = to.transform.position - from.transform.position;
-        var a = Mathf.Atan2(offset.z, offset.x) * Mathf.Rad2Deg;
-        foreach (Direction d in System.Enum.GetValues(typeof(Direction)))
+        var offset = from.PlanarOffset(to);
+        var a = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
+        for (int i=0; i<Extensions.Directions.Length; i++)        
         {
-            if (d == Direction.NONE) continue;
-            var dirA = (int)d * 45f;
-            if (Mathf.Abs(dirA - a) % 360 < angleTolerance) return d;
+            var dir = Extensions.Directions[i];
+            var dirA = dir.AsAngle();
+            if (Mathf.Abs(dirA - a) % 360 < angleTolerance) return dir;
         }
         return Direction.NONE;
     }
 
-    public static Direction FlipDirection(Direction direction)
-    {
-        if (direction == Direction.NONE) return Direction.NONE;
-        var i = (int)direction - 4;
-        if (i < 0) i += 8;
-        return (Direction)i;
-    }
-
-    public enum Topology { Internal, Edge };
     List<GeoNode> neighbours = new List<GeoNode>();
     public Geography geography { get; set; }
     public float gizmoSize { get; set; }
+    
+    public enum Topology {
+        None = 0,
+        WorldInternal = 1,
+        WorldEdge = 2,
+        Land = 4,
+        Water = 8,
+        Shore = 16,
+        Main = 32
+    };
 
     public Topology topology
     {
         get
         {
+            var topology = Topology.WorldInternal;
             if (neighbours.Count < 5)
             {
-                return Topology.Edge;
+                topology = Topology.WorldEdge;
             }
-            return Topology.Internal;
+            bool water = transform.position.y < 0;
+            topology |= water ? Topology.Water : Topology.Land;
+            bool shore = false;
+            for (int i = 0, l=neighbours.Count; i<l; i++)
+            {
+                if ((neighbours[i].transform.position.y < 0) != water)
+                {
+                    shore = true;
+                    break;
+                }
+            }
+            topology |= shore ? Topology.Shore : Topology.Main;
+            return topology;
         }
     }
     public void SetNeighbours(List<GeoNode> nodes)
@@ -72,6 +97,22 @@ public class GeoNode : MonoBehaviour
         }        
     }
 
+    public Vector2 PlanarPosition
+    {
+        get
+        {
+            return new Vector2(transform.position.x, transform.position.z);
+        }
+    }
+
+    /**Vector pointing to other
+     */
+    public Vector2 PlanarOffset(GeoNode other)
+    {
+        var offset = other.transform.position - transform.position;
+        return new Vector2(offset.x, offset.z);
+    }
+
     public float PlanarDistance(GeoNode other)
     {
         Vector3 offset = other.transform.position - transform.position;
@@ -87,17 +128,16 @@ public class GeoNode : MonoBehaviour
             {
                 throw new System.ArithmeticException("GeoNode lacks neighbours.");
             }
-            Vector2 myPos = new Vector2(transform.position.x, transform.position.z);
+            Vector2 myPos = PlanarPosition;
             return neighbours
-                .Select(node => {
-                    return Vector2.Distance(myPos, new Vector2(node.transform.position.x, node.transform.position.z));
-                })
+                .Select(node => Vector2.Distance(myPos, node.PlanarPosition))
                 .Sum() / neighbours.Count;
         }
     }
 
     private void OnDrawGizmos()
     {
+        var topo = this.topology;
         if (geography.showGeoNodeConnectionsGizmos)
         {
             Gizmos.color = Color.white;
@@ -109,13 +149,13 @@ public class GeoNode : MonoBehaviour
         }
         if (geography.showGeoNodeGizmos)
         {
-            Gizmos.color = transform.position.y < 0 ? Color.blue : Color.green;
+            Gizmos.color = topo.HasFlag(Topology.Water) ? Color.blue : Color.green;
             Gizmos.DrawSphere(transform.position, gizmoSize * geography.gizmoSize);
         }
         if (geography.showGeoNodeEdgeGizmos)
         {
             Gizmos.color = Color.cyan;
-            if (topology == Topology.Edge)
+            if (topo.HasFlag(Topology.WorldEdge))
             {
                 Gizmos.DrawWireCube(transform.position, Vector3.one * gizmoSize * geography.gizmoSize);
             }
@@ -152,29 +192,30 @@ public class GeoNode : MonoBehaviour
         var neighbourAngles = neighbours
             .Select(node =>
             {
-                var offset = node.transform.position - transform.position;
-                return Mathf.Atan2(offset.z, offset.x) * Mathf.Rad2Deg;
+                var offset = PlanarOffset(node);
+                return Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
             })
             .ToArray();
-        foreach (Direction d in System.Enum.GetValues(typeof(Direction)))
+        for (int i=0; i<Extensions.Directions.Length; i++)        
         {
-            if (directionsFilter.HasFlag(d))
+            var dir = Extensions.Directions[i];
+            if (!directionsFilter.HasFlag(dir)) continue;
+            
+            bool foundNeighbour = false;
+            float a = dir.AsAngle();
+            for (int j=0; j < neighbourAngles.Length; j++)
             {
-                bool foundNeighbour = false;
-                float a = (int) d * 45;
-                for (int i=0; i< neighbourAngles.Length; i++)
+                if (Mathf.Abs(neighbourAngles[j] - a) % 360 < angleTolerance)
                 {
-                    if (Mathf.Abs(neighbourAngles[i] - a) % 360 < angleTolerance)
-                    {
-                        ret.Add(( d, neighbours[i]));
-                        foundNeighbour = true;
-                    }
+                    ret.Add(( dir, neighbours[j]));
+                    foundNeighbour = true;
                 }
-                if (!foundNeighbour)
-                {
-                    ret.Add((d, null));
-                }                
             }
+            if (!foundNeighbour)
+            {
+                ret.Add((dir, null));
+            }                
+            
         }
         return ret;
     }
@@ -195,7 +236,7 @@ public class GeoNode : MonoBehaviour
             })
             .ToArray();
         
-        float a = (int)direction * 45;
+        float a = direction.AsAngle();
         for (int i = 0; i < neighbourAngles.Length; i++)
         {
             if (Mathf.Abs(neighbourAngles[i] - a) % 360 < angleTolerance)
@@ -208,7 +249,7 @@ public class GeoNode : MonoBehaviour
 
     public GeoNode GetRotationNeighbour(Rotation rotation, Direction inDirection)
     {
-        var neighbourDirections = FlipDirection(inDirection).AllowedRotations(rotation);
+        var neighbourDirections = inDirection.Inverted().AllowedRotations(rotation);
         for (int i = 0; i< neighbourDirections.Length; i++)
         {
             var neigbour = GetNeighbour(neighbourDirections[i]);

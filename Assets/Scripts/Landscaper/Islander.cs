@@ -11,16 +11,12 @@ public class Islander : LandscaperBase
 
     protected override void Landscape(Geography geography)
     {
-        System.Func<GeoNode, GeoNode, bool> neighbourLandFilter = (node, neighbour) =>
-        {
-            return neighbour.transform.position.y > 0f;
-        };
         System.Func<GeoNode, bool> filter = node =>
         {
-            return node.transform.position.y < 0 && node.GetNeighbours(neighbourLandFilter).Count() == 0;
+            var topology = node.topology;
+            return topology.HasFlag(GeoNode.Topology.Water) && topology.HasFlag(GeoNode.Topology.Main);
         };
-        var openSeaNodes = geography.GetNodes(filter).ToList();
-        
+        var openSeaNodes = geography.GetNodes(filter).ToList();        
         System.Func<GeoNode, GeoNode, bool> openSeaNeighbours = (node, neighbour) =>
         {
             return openSeaNodes.Contains(neighbour);

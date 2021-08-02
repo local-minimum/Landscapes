@@ -47,15 +47,16 @@ public class Geography : MonoBehaviour
                         Debug.Log(string.Format("{0}: Neighbour {1} has no more that rotates {2}", node.name, neighbour.name, rotations[i]));
                     } else
                     {
-                        Debug.Log(string.Format("{0}: Too far from {1}'s neighbour {2} to be neighbours", node.name, neighbour.name, nextNeighbour.name));
+                        Debug.Log(string.Format("{0}: Too far from {1}'s neighbour {2} to be neighbours {3}", node.name, neighbour.name, nextNeighbour.name, nextNeighbour.PlanarDistance(node)));
                     } 
                     */
                     if (filterEdges.HasFlag(GeoNode.DirectionFromNodes(node, neighbour))) node.AddNeighbour(neighbour);
+                    trail.Add(nextNeighbour);
                     break;
                 }
 
-                dir = GeoNode.DirectionFromNodes(neighbour, nextNeighbour);
                 if (filterEdges.HasFlag(GeoNode.DirectionFromNodes(node, neighbour))) node.AddNeighbour(neighbour);
+                dir = GeoNode.DirectionFromNodes(neighbour, nextNeighbour);
                 neighbour = nextNeighbour;
                 if (j > 20)
                 {

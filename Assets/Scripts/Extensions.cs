@@ -18,6 +18,59 @@ public static class Extensions
 
     }
 
+    public static readonly GeoNode.Direction[] Directions = new GeoNode.Direction[]
+    {
+        GeoNode.Direction.E,
+        GeoNode.Direction.NE,
+        GeoNode.Direction.N,
+        GeoNode.Direction.NW,
+        GeoNode.Direction.W,
+        GeoNode.Direction.SW,
+        GeoNode.Direction.S,
+        GeoNode.Direction.SE
+    };
+
+    public static float AsAngle(this GeoNode.Direction dir)
+    {
+        switch (dir)
+        {
+            case GeoNode.Direction.E:
+                return 0;
+            case GeoNode.Direction.NE:
+                return 45;
+            case GeoNode.Direction.N:
+                return 90;
+            case GeoNode.Direction.NW:
+                return 135;
+            case GeoNode.Direction.W:
+                return 180;
+            case GeoNode.Direction.SW:
+                return 225;
+            case GeoNode.Direction.S:
+                return 270;
+            case GeoNode.Direction.SE:
+                return 315;
+        }
+        throw new System.ArgumentException(string.Format("{0} has no angle.", dir));
+        
+    }
+
+    public static int AsOrdinal(this GeoNode.Direction dir)
+    {
+        for (int i = 0; i<Directions.Length; i++)
+        {
+            if (dir == Directions[i]) return i;
+        }
+        return -1;
+    }
+
+    public static GeoNode.Direction Inverted(this GeoNode.Direction dir)
+    {
+        var ordinal = dir.AsOrdinal();
+        if (ordinal == -1) return GeoNode.Direction.NONE;
+        return Directions[(ordinal + 4) % 8];
+    }
+
     public static bool IsCardinal(this GeoNode.Direction dir)
     {
         return dir == GeoNode.Direction.E
