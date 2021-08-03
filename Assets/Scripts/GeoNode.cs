@@ -47,6 +47,21 @@ public class GeoNode : MonoBehaviour
         Main = 32
     };
 
+    public float Elevation
+    {
+        get
+        {
+            return transform.position.y;
+        }
+
+        set
+        {
+            Vector3 pos = transform.position;
+            pos.y = value;
+            transform.position = pos;
+        }
+    }
+
     public Topology topology
     {
         get
@@ -56,12 +71,12 @@ public class GeoNode : MonoBehaviour
             {
                 topology = Topology.WorldEdge;
             }
-            bool water = transform.position.y < 0;
+            bool water = Elevation < 0;
             topology |= water ? Topology.Water : Topology.Land;
             bool shore = false;
             for (int i = 0, l=neighbours.Count; i<l; i++)
             {
-                if ((neighbours[i].transform.position.y < 0) != water)
+                if ((neighbours[i].Elevation < 0) != water)
                 {
                     shore = true;
                     break;
@@ -71,6 +86,23 @@ public class GeoNode : MonoBehaviour
             return topology;
         }
     }
+
+    public bool Is(Geography.NodeFilter filter)
+    {
+        switch (filter)
+        {
+            case Geography.NodeFilter.Any:
+                return true;
+            case Geography.NodeFilter.Land:
+                return Elevation >= 0;
+            case Geography.NodeFilter.Water:
+                return Elevation < 0;
+            case Geography.NodeFilter.ZeroOrWater:
+                return Elevation <= 0;
+        }
+        throw new System.NotImplementedException(string.Format("{0} not implemented", filter));
+    }
+
     public void SetNeighbours(List<GeoNode> nodes)
     {
         if (neighbours.Count == 0)

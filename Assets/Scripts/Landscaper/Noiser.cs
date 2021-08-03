@@ -16,7 +16,7 @@ public class Noiser : LandscaperBase
                 Random.Range(-magnitude.y, magnitude.y),
                 Random.Range(-magnitude.z/2, magnitude.z/2)
             );
-            if (node.transform.position.y < 0)
+            if (node.Elevation < 0)
             {
                 noise.y = -Mathf.Abs(noise.y);
             } else

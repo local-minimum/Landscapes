@@ -16,6 +16,8 @@ public class Geography : MonoBehaviour
     List<GeoNode> nodes = new List<GeoNode>();
     public List<LandscaperBase> creation = new List<LandscaperBase>();
 
+    public enum NodeFilter { Any, Water, Land, ZeroOrWater };
+
     public void AddNodeUnsafe(GeoNode node)
     {
         node.gameObject.name = string.Format("GeoNode #{0}", nodes.Count);
@@ -89,6 +91,22 @@ public class Geography : MonoBehaviour
     public IEnumerable<GeoNode> GetNodes(System.Func<GeoNode, bool> filter)
     {
         return nodes.Where(filter);
+    }
+
+    public IEnumerable<GeoNode> GetNodes(NodeFilter filter)
+    {
+        switch (filter)
+        {
+            case NodeFilter.Any:
+                return nodes.Where(n => true);
+            case NodeFilter.ZeroOrWater:
+                return nodes.Where(n => n.Elevation <= 0);
+            case NodeFilter.Land:
+                return nodes.Where(n => n.Elevation >= 0);
+            case NodeFilter.Water:
+                return nodes.Where(n => n.Elevation < 0);
+        }
+        throw new System.NotImplementedException(string.Format("Unsuported filter {0}", filter));
     }
 
     public Rect BoundingRect

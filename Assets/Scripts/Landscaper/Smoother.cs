@@ -20,8 +20,8 @@ public class Smoother : LandscaperBase
         {
             return (
                 allowCrossSeaSurfaceInfluence 
-                || Mathf.Sign(node.transform.position.y) == Mathf.Sign(neighbour.transform.position.y)
-            ) && Mathf.Abs(node.transform.position.y - neighbour.transform.position.y) > actionDeltaThreshold;
+                || Mathf.Sign(node.Elevation) == Mathf.Sign(neighbour.Elevation)
+            ) && Mathf.Abs(node.Elevation - neighbour.Elevation) > actionDeltaThreshold;
         };
 
         var candidates = geography
@@ -32,16 +32,14 @@ public class Smoother : LandscaperBase
         {
             var node = candidates[i];
             var neighbours = node.GetNeighbours(neighbourFilter).ToArray();            
-            if (neighbours.Length == 0) continue;
-            var position = node.transform.position;
-            var nodeYSign = Mathf.Sign(position.y);
+            if (neighbours.Length == 0) continue;            
+            var nodeDepthSign = Mathf.Sign(node.Elevation);
             var avg = neighbours
-                .Select(n => Mathf.Sign(n.transform.position.y) == nodeYSign ? n.transform.position.y : 0)
+                .Select(n => Mathf.Sign(n.Elevation) == nodeDepthSign ? n.Elevation : 0)
                 .Sum() / neighbours.Length;            
-            var newY = Mathf.Lerp(position.y, avg, averageAttraction.Evaluate(Random.value));
-            // Debug.Log(string.Format("{0}: y {1}, n-avg {2} -> {3}", node.name, position.y, avg, newY));
-            position.y = newY;
-            node.transform.position = position;
+            var newDepth = Mathf.Lerp(node.Elevation, avg, averageAttraction.Evaluate(Random.value));
+            // Debug.Log(string.Format("{0}: y {1}, n-avg {2} -> {3}", node.name, position.y, avg, newY));            
+            node.Elevation = newDepth;
         }
     }
 

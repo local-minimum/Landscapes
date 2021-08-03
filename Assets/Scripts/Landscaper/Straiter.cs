@@ -13,6 +13,7 @@ public class Straiter : LandscaperBase
     public int flexibility = 2;
     public AnimationCurve angleCost;
     public AnimationCurve heightCost;
+    public float costNoise = 0.1f;
 
     struct StraitCandidate
     {
@@ -81,11 +82,11 @@ public class Straiter : LandscaperBase
     {
         Dictionary<GeoNode, int> seaLookup = new Dictionary<GeoNode, int>();
         var stack = new Queue<GeoNode>();
-        System.Func<GeoNode, bool> seaFilter = node => node.transform.position.y < 0f;
+        System.Func<GeoNode, bool> seaFilter = node => node.Elevation < 0f;
         var seaNodes = geography.GetNodes(seaFilter).ToList();
         System.Func<GeoNode, GeoNode, bool> filter = (node, neighbour) =>
         {
-            return neighbour.transform.position.y < 0 && !seaLookup.ContainsKey(neighbour) && !stack.Contains(neighbour);
+            return neighbour.Elevation < 0 && !seaLookup.ContainsKey(neighbour) && !stack.Contains(neighbour);
         };
         int sea = 0;
         List<int> seaSizes = new List<int>();
@@ -143,7 +144,7 @@ public class Straiter : LandscaperBase
             var candidates = StraitSourceCandidates(centerOfSeas[sea - 1], attractor, seaNodes, sea);
             var visited = new List<GeoNode>();
             visited.AddRange(seaNodes);
-            
+            bool foundSea = false;
             while (candidates.Count > 0)
             {
                 candidates.Sort((x, y) => x.cost - y.cost < 0 ? -1 : 1);
@@ -161,19 +162,18 @@ public class Straiter : LandscaperBase
                 var destinations = possible.Where(e => e.node.topology.HasFlag(GeoNode.Topology.Water)).ToArray();
                 if (destinations.Length > 0)
                 {
+                    foundSea = true;
                     var destination = destinations[Random.Range(0, destinations.Length)].node;
                     //Debug.Log(string.Format("Found strait {0} => {1}", string.Join(" => ", candidate.path.Select(n => n.name)), destination.name));
-                    var depth = Mathf.Max(destination.transform.position.y, candidate.Source.transform.position.y);
+                    var depth = Mathf.Max(destination.Elevation, candidate.Source.Elevation);
                     var reachedSea = seaLookup[destination];
-
+                    Debug.Log(string.Format("Sea {0} connected to sea {1}", sea, reachedSea));
                     // Make strait watery and of reached sea
                     for (int i = 1, l = candidate.path.Count; i < l; i++)
                     {
                         var straitNode = candidate.path[i];
                         seaLookup[straitNode] = reachedSea;
-                        Vector3 pos = straitNode.transform.position;
-                        pos.y = depth;
-                        straitNode.transform.position = pos;
+                        straitNode.Elevation = depth;
                     }
 
                     // Make source sea target sea
@@ -201,8 +201,8 @@ public class Straiter : LandscaperBase
                 {
                     var location = locations[i];
                     var angleCost = this.angleCost.Evaluate(location.dir.Angle(targetDirection));
-                    var heightCost = this.heightCost.Evaluate(location.node.transform.position.y);
-                    var edgeCost = angleCost + heightCost;
+                    var heightCost = this.heightCost.Evaluate(location.node.Elevation);
+                    var edgeCost = angleCost + heightCost + Random.value * costNoise;
                     var isNew = location.strait.candidate.Empty;
                     if (!isNew && candidate.cost + edgeCost > location.strait.candidate.cost) continue;
                     var newCandidate = candidate.Evolve(location.node, edgeCost);
@@ -216,7 +216,7 @@ public class Straiter : LandscaperBase
                     }
                 }
             }
-            //Debug.Log(string.Format("Done with sea {0}", sea));
+            if (!foundSea) Debug.LogWarning(string.Format("Could not find a way to connect sea {0}", sea));            
             sea--;
         }
     }
@@ -243,7 +243,7 @@ public class Straiter : LandscaperBase
         var refSqDist = Vector2.SqrMagnitude(sourceSeaCenter - targetSeaCenter);
         return sourceNodes
             .Where(node => node.topology.HasFlag(GeoNode.Topology.Shore) && Vector2.SqrMagnitude(targetSeaCenter - node.PlanarPosition) < refSqDist)
-            .Select(node => new StraitCandidate(node, (targetSeaCenter - node.PlanarPosition).magnitude * sourceLocationWeight))
+            .Select(node => new StraitCandidate(node, (targetSeaCenter - node.PlanarPosition).magnitude * sourceLocationWeight + Random.value * costNoise))
             .ToList();
     }
 }

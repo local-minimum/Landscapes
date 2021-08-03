@@ -29,20 +29,12 @@ public class Islander : LandscaperBase
 
             for (int j=0; j<size; j++)
             {
-                origin.transform.position = GetLandPosition(origin);
+                origin.Elevation = heightDistribution.Evaluate(Random.value);
                 openSeaNodes.Remove(origin);
                 var neighbours = origin.GetNeighbours(openSeaNeighbours).ToArray();
                 if (neighbours.Length == 0) break;
                 origin = neighbours[Random.Range(0, neighbours.Length)];
             };
         }
-    }
-
-    Vector3 GetLandPosition(GeoNode node)
-    {
-        Vector3 landPosition = node.transform.position;
-        landPosition.y = heightDistribution.Evaluate(Random.value);
-        return landPosition;
-
     }
 }

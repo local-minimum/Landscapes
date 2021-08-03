@@ -151,4 +151,15 @@ public static class Extensions
         }
         return new GeoNode.Direction[0];
     }
+
+    public static GeoNode.Direction AsDirection(this IEnumerable<GeoNode.Direction> dirs)
+    {
+        var dir = GeoNode.Direction.NONE;
+        foreach (var d in dirs)
+        {
+            dir |= d;
+        }
+        return dir;
+    }
+
 }
