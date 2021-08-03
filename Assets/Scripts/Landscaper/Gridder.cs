@@ -35,29 +35,25 @@ public class Gridder : LandscaperBase
 
     void ConnectGrid(Geography geography)
     {
-        float connectLengthSq = 2.001f * spacing * spacing;
-        int nNodes = geography.NodeCount;
-        for (int i = 0; i < nNodes; i++)
+        for (int x=0; x< width; x++)
         {
-            GeoNode node = geography.GetNode(i);
-            List<GeoNode> neighbours = new List<GeoNode>();
-            for (int j = 0; j < nNodes; j++)
+            for (int y=0; y < height; y++)
             {
-                if (i == j) continue;
-                GeoNode other = geography.GetNode(j);
-                if (Vector3.SqrMagnitude(other.transform.position - node.transform.position) < connectLengthSq)
+                int pos = x * height + y;
+                var node = geography.GetNode(pos);
+                if (x > 0)
                 {
-                    var dZ = other.transform.position.z - node.transform.position.z;
-                    var dX = other.transform.position.x - node.transform.position.x;
-                    if (dX != 0 && dZ != 0 && Mathf.Sign(dX) == Mathf.Sign(dZ))
+                    node.AddNeighbour(geography.GetNode((x - 1) * height + y));
+                    if (y < height - 1)
                     {
-                        continue;
+                        node.AddNeighbour(geography.GetNode((x - 1) * height + y + 1));
                     }
-                    neighbours.Add(other);
                 }
+                if (y > 0)
+                {
+                    node.AddNeighbour(geography.GetNode(x * height + y - 1));
+                }                
             }
-            node.SetNeighbours(neighbours);
         }
     }
-
 }
