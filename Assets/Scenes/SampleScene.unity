@@ -691,7 +691,7 @@ MonoBehaviour:
   active: 1
   continuationProbability: 0.99
   continuationProbDecay: 0.05
-  magnitude: 3
+  magnitude: 6
   ranges: 30
   filter: 2
 --- !u!114 &1838253599
