@@ -35,22 +35,36 @@ public class EdgeLands : LandscaperBase
             var refDistance = gridder == null ? node.avgPlanarDistance : gridder.spacing;
             var refDiagDistance = Mathf.Sqrt(2 * Mathf.Pow(refDistance, 2));
 
-            var empty = node
+            var cardinalNeighbour = node
                 .GetNeighbours(spawnFilter)
-                .Where(item => item.node == null)
                 .ToArray();
-            for (int j = 0; j<empty.Length; j++)
+
+            for (int j = 0; j<cardinalNeighbour.Length; j++)
             {
-                var edge = empty[j];
-                var edgeRad = edge.dir.AsAngle() * Mathf.Deg2Rad;                
-                var distance = edge.dir.IsCardinal() ? refDistance : refDiagDistance;
-                var z = distance * Mathf.Sin(edgeRad);
-                var x = distance * Mathf.Cos(edgeRad);
-                var pos = new Vector3(x, 0, z) + node.transform.position;
-                pos.y = 0;                
-                var newNode = GeoNode.Spawn(geography, pos, node.gizmoSize);
-                geography.AddNode(newNode, node, refDistance * connectionTolerance, connectionsFilter);                                
+                var neighbour = cardinalNeighbour[j];
+                var newNode = neighbour.node == null ? AddNode(geography, node, neighbour.dir, refDistance) : neighbour.node;
+                var rotatedEdges = neighbour.dir.WithNeighbours(2);
+                for (int k = 0; k < 3; k++)
+                {
+                    var dir = rotatedEdges[k * 2];
+                    if (newNode.GetNeighbour(dir) == null)
+                    {
+                        AddNode(geography, newNode, dir, refDistance);
+                    }
+                }
             }
         }
+    }
+
+    GeoNode AddNode(Geography geography, GeoNode node, GeoNode.Direction direction, float distance)
+    {
+        var edgeRad = direction.AsAngle() * Mathf.Deg2Rad;        
+        var z = distance * Mathf.Sin(edgeRad);
+        var x = distance * Mathf.Cos(edgeRad);
+        var pos = new Vector3(x, 0, z) + node.transform.position;
+        pos.y = 0;
+        var newNode = GeoNode.Spawn(geography, pos, node.gizmoSize);
+        geography.AddNode(newNode, node, distance * connectionTolerance, connectionsFilter);
+        return newNode;
     }
 }
