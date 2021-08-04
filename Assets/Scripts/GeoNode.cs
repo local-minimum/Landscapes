@@ -129,6 +129,19 @@ public class GeoNode : MonoBehaviour
         }        
     }
 
+    public void RemoveNeighbour(GeoNode other)
+    {
+        if (other == this)
+        {
+            throw new System.ArgumentException(string.Format("Can't un-neighbour myself, {0}", name));
+        }
+        if (neighbours.Contains(other))
+        {
+            neighbours.Remove(other);
+            other.RemoveNeighbour(this);
+        }
+    }
+
     public Vector2 PlanarPosition
     {
         get
@@ -216,6 +229,15 @@ public class GeoNode : MonoBehaviour
         node.geography = geography;
         node.gizmoSize = gizmoSize;
         return node;
+    }
+
+    public bool HasNeighbour(GeoNode other)
+    {
+        for (int i=0,l=neighbours.Count; i<l; i++)
+        {
+            if (neighbours[i] == other) return true;
+        }
+        return false;
     }
 
     public List<(Direction dir, GeoNode node)> GetNeighbours(Direction directionsFilter, float angleTolerance = 5)

@@ -8,6 +8,13 @@ public class Shorer : LandscaperBase
     [Range(1, 22.5f)]
     public float angleTolerance = 10f;
 
+    [Range(0, 1)]
+    public float maxLength = 0.35f;
+    [Range(0, 1)]
+    public float minLength = 0.05f;
+    
+    public float gizmoSize = 1f;
+
     struct ShoreEdge
     {
         public GeoNode Land;
@@ -19,17 +26,46 @@ public class Shorer : LandscaperBase
             Water = water;
         }
 
-        public static IEnumerable<ShoreEdge> CCWShores(GeoNode land, float angleTolerance)
-        {
-            return land
-                .GetNeighbours(Extensions.Directions.AsDirection(), angleTolerance)
-                .Where(n => n.node != null && n.node.topology.HasFlag(GeoNode.Topology.Water))
-                .Select(n => new ShoreEdge(land, n.node));
-        }
-
         public bool Equals(ShoreEdge other)
         {
             return other.Land == Land && other.Water == Water;
+        }
+
+        public Vector3 InterpolatedShorePoint(float t)
+        {
+            var off = Land.PlanarOffset(Water) * Mathf.Clamp01(t);
+            return new Vector3(Land.transform.position.x + off.x, 0, Land.transform.position.z + off.y);
+        }
+
+        public void Inject(GeoNode other)
+        {
+            Land.RemoveNeighbour(Water);
+            other.AddNeighbour(Land);
+            other.AddNeighbour(Water);
+        }
+
+        public GeoNode[] Triangle(ShoreEdge other)
+        {
+            if (Land == other.Land && Water.HasNeighbour(other.Water))
+            {
+                return new GeoNode[] { Water, Land, other.Water };
+            } else if (Water == other.Water && Land.HasNeighbour(other.Land))
+            {
+                return new GeoNode[] { Land, Water, other.Land };
+            }
+            throw new System.ArgumentException(string.Format(
+                "{0} and {1} don't form a triangle",
+                this,
+                other
+            ));
+        }
+
+        public float PlanarDistance
+        {
+            get
+            {
+                return Water.PlanarDistance(Land);
+            }
         }
     }
 
@@ -45,11 +81,12 @@ public class Shorer : LandscaperBase
         {
             var seed = shores[i];
             if (visitedShores.Contains(seed)) continue;
-            MakeShore(seed, visitedShores);
+            var shoreEdges = CollectShoreEdges(seed, visitedShores);
+            MakeShore(geography, shoreEdges);
         }
     }
 
-    void MakeShore(GeoNode seed, List<GeoNode> visitedShores)
+    List<ShoreEdge> CollectShoreEdges(GeoNode seed, List<GeoNode> visitedShores)
     {
         var node = seed;
         var edges = new List<ShoreEdge>();
@@ -111,10 +148,55 @@ public class Shorer : LandscaperBase
             if (!foundLand && !circled)
             {
                 Debug.LogError(string.Format("Shore disappeared at {0}", node.name));
-                throw new System.Exception();
             }
             first = false;
         }
-        Debug.Log(string.Format("Shore length {0}.", edges.Count));
+        //Debug.Log(string.Format("Shore length {0}.", edges.Count));
+        return edges;
+    }
+
+    void MakeShore(Geography geography, List<ShoreEdge> edges)
+    {
+        if (edges.Count < 2) return;
+        var prevEdge = edges[0];
+        var prevNode = GeoNode.Spawn(geography, prevEdge.InterpolatedShorePoint(Random.Range(minLength, maxLength)), gizmoSize);
+        var firstNode = prevNode;
+        geography.AddNodeUnsafe(prevNode);
+        prevEdge.Inject(prevNode);
+
+        for (int i=1, l=edges.Count; i<l; i++)
+        {
+            var edge = edges[i];
+            var triangle = edge.Triangle(prevEdge);
+            var node = GeoNode.Spawn(geography, edge.InterpolatedShorePoint(Random.Range(minLength, maxLength)), gizmoSize);
+            geography.AddNodeUnsafe(node);
+            edge.Inject(node);
+
+            var internalNode = MakeTriangleInternalNode(geography, triangle, Mathf.Min(edge.PlanarDistance, prevEdge.PlanarDistance));
+            internalNode.AddNeighbour(node);
+            internalNode.AddNeighbour(prevNode);
+            prevNode = node;
+            prevEdge = edge;
+        }
+
+        var finalNode = MakeTriangleInternalNode(geography, prevEdge.Triangle(edges[0]), Mathf.Min(edges[0].PlanarDistance, prevEdge.PlanarDistance));
+        finalNode.AddNeighbour(prevNode);
+        finalNode.AddNeighbour(firstNode);
+    }
+
+    GeoNode MakeTriangleInternalNode(Geography geography, GeoNode[] triangle, float refEdgeLength)
+    {
+        var shared = triangle[1];
+        var off1 = shared.PlanarOffset(triangle[0]);
+        var off2 = shared.PlanarOffset(triangle[2]);
+        var dist = (shared.Is(Geography.NodeFilter.Water) ? 1 - Random.Range(minLength, maxLength) : Random.Range(minLength, maxLength)) * refEdgeLength;
+        var pos = (off1 + off2).normalized * dist;
+        var internalNode = GeoNode.Spawn(geography, new Vector3(shared.transform.position.x + pos.x, 0, shared.transform.position.z + pos.y), gizmoSize);
+        geography.AddNodeUnsafe(internalNode);
+        for (int j = 0; j < 3; j++)
+        {
+            internalNode.AddNeighbour(triangle[j]);
+        }
+        return internalNode;
     }
 }

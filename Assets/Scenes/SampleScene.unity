@@ -480,7 +480,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   description: Make heights
-  active: 0
+  active: 1
   circles: 60
   elevations:
   - 0
@@ -795,3 +795,6 @@ MonoBehaviour:
   description: Detailed shores
   active: 1
   angleTolerance: 10
+  maxLength: 0.6
+  minLength: 0.05
+  gizmoSize: 1
