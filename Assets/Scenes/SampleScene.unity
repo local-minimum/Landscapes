@@ -465,7 +465,7 @@ MonoBehaviour:
   pointFilter: 3
   minSeaFraction: 0.4
   maxSeaFraction: 0.75
-  internalCircles: 0
+  internalCircles: 1
   gridder: {fileID: 1838253590}
 --- !u!114 &1838253593
 MonoBehaviour:
@@ -545,7 +545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   description: Make more small islands
-  active: 0
+  active: 1
   sizes: 0100000001000000020000000300000003000000030000000400000005000000
   islands: 50
   heightDistribution:
@@ -585,7 +585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   description: Remove some circle artifacts
-  active: 0
+  active: 1
   smoothActionProbability: 0.6
   actionDeltaThreshold: 0.5
   averageAttraction:
@@ -626,7 +626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   description: Connect seas
-  active: 0
+  active: 1
   straitProbability: 1
   sourceLocationWeight: 0
   flexibility: 3
@@ -692,7 +692,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   description: Mountains
-  active: 0
+  active: 1
   continuationProbability: 0.99
   continuationProbDecay: 0.05
   magnitude: 6
@@ -711,7 +711,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   description: Erode shores
-  active: 0
+  active: 1
   erosionProbability: 0.3
   depths:
     serializedVersion: 2
@@ -774,7 +774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   description: Graves
-  active: 0
+  active: 1
   continuationProbability: 0.99
   continuationProbDecay: 0.05
   magnitude: -6
@@ -793,5 +793,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   description: Detailed shores
-  active: 0
+  active: 1
   angleTolerance: 10
