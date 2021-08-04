@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public static class Extensions
 {
@@ -95,6 +96,14 @@ public static class Extensions
         return Directions[(ordinal + 4) % 8];
     }
 
+    public static List<GeoNode.Direction> CCWFrom(this GeoNode.Direction dir, bool includeSelf)
+    {        
+        var ordinal = dir.AsOrdinal();
+        var after = Directions.Skip(ordinal + 1).Take(8 - ordinal).ToList();
+        after.AddRange(Directions.Take(ordinal + (includeSelf ? 1 : 0)));
+        return after;        
+    }
+
     public static bool IsCardinal(this GeoNode.Direction dir)
     {
         return dir == GeoNode.Direction.E
@@ -161,5 +170,4 @@ public static class Extensions
         }
         return dir;
     }
-
 }

@@ -334,6 +334,7 @@ GameObject:
   - component: {fileID: 1838253598}
   - component: {fileID: 1838253599}
   - component: {fileID: 1838253600}
+  - component: {fileID: 1838253601}
   m_Layer: 0
   m_Name: Geography
   m_TagString: Untagged
@@ -384,6 +385,7 @@ MonoBehaviour:
   - {fileID: 1838253600}
   - {fileID: 1838253591}
   - {fileID: 1838253596}
+  - {fileID: 1838253601}
 --- !u!114 &1838253590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -400,7 +402,7 @@ MonoBehaviour:
   active: 1
   width: 160
   height: 100
-  spacing: 1
+  spacing: 10
 --- !u!114 &1838253591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -464,6 +466,7 @@ MonoBehaviour:
   minSeaFraction: 0.4
   maxSeaFraction: 0.75
   internalCircles: 1
+  gridder: {fileID: 1838253590}
 --- !u!114 &1838253593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,6 +515,7 @@ MonoBehaviour:
   minSeaFraction: 0
   maxSeaFraction: 1
   internalCircles: 0
+  gridder: {fileID: 1838253590}
 --- !u!114 &1838253594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -706,7 +710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b1d4410e3b61c74a883d3709b6c0f65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: 
+  description: Erode shores
   active: 1
   erosionProbability: 0.3
   depths:
@@ -776,3 +780,18 @@ MonoBehaviour:
   magnitude: -6
   ranges: 20
   filter: 1
+--- !u!114 &1838253601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838253587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a99dd54cea1ee5a438d5a78117fe9012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: Detailed shores
+  active: 1
+  angleTolerance: 10

@@ -28,7 +28,7 @@ public class GeoNode : MonoBehaviour
         {
             var dir = Extensions.Directions[i];
             var dirA = dir.AsAngle();
-            if (Mathf.Abs(dirA - a) % 360 < angleTolerance) return dir;
+            if (Mathf.Abs(Mathf.DeltaAngle(dirA, a)) < angleTolerance) return dir;
         }
         return Direction.NONE;
     }
@@ -237,7 +237,7 @@ public class GeoNode : MonoBehaviour
             float a = dir.AsAngle();
             for (int j=0; j < neighbourAngles.Length; j++)
             {
-                if (Mathf.Abs(neighbourAngles[j] - a) % 360 < angleTolerance)
+                if (Mathf.Abs(Mathf.DeltaAngle(neighbourAngles[j], a)) < angleTolerance)
                 {
                     ret.Add(( dir, neighbours[j]));
                     foundNeighbour = true;
@@ -262,16 +262,16 @@ public class GeoNode : MonoBehaviour
     {        
         var neighbourAngles = neighbours
             .Select(node =>
-            {
-                var offset = node.transform.position - transform.position;
-                return Mathf.Atan2(offset.z, offset.x) * Mathf.Rad2Deg;
+            {                
+                var offset = PlanarOffset(node);
+                return Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
             })
             .ToArray();
         
         float a = direction.AsAngle();
         for (int i = 0; i < neighbourAngles.Length; i++)
         {
-            if (Mathf.Abs(neighbourAngles[i] - a) % 360 < angleTolerance)
+            if (Mathf.Abs(Mathf.DeltaAngle(neighbourAngles[i], a)) < angleTolerance)
             {
                 return neighbours[i];
             }

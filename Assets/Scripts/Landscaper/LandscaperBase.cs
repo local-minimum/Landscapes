@@ -11,6 +11,7 @@ public abstract class LandscaperBase : MonoBehaviour
 
     public void Apply(Geography geography)
     {
+        Debug.Log(string.Format("Applying {0}", description));
         if (active) Landscape(geography);
     }
 }
