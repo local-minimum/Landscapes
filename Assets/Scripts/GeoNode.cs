@@ -103,11 +103,23 @@ public class GeoNode : MonoBehaviour
         throw new System.NotImplementedException(string.Format("{0} not implemented", filter));
     }
 
+    void _SetNeighbours(List<GeoNode> nodes)
+    {
+        neighbours = nodes
+            .Select(n =>
+            {
+                var a = Mathf.Atan2(n.transform.position.z - transform.position.z, n.transform.position.x - transform.position.x);
+                return (a, n);
+            })
+            .OrderBy(i => i.a)
+            .Select(i => i.n)
+            .ToList();
+    }
     public void SetNeighbours(List<GeoNode> nodes)
     {
         if (neighbours.Count == 0)
         {
-            neighbours.AddRange(nodes);
+            _SetNeighbours(nodes);
         } else
         {
             throw new System.InvalidOperationException(
@@ -125,6 +137,7 @@ public class GeoNode : MonoBehaviour
         if (!neighbours.Contains(other))
         {
             neighbours.Add(other);
+            _SetNeighbours(neighbours);
             other.AddNeighbour(this);
         }        
     }
@@ -182,6 +195,7 @@ public class GeoNode : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (!geography.enableGizmos) return;
         var topo = this.topology;
         if (geography.showGeoNodeConnectionsGizmos)
         {
@@ -209,6 +223,7 @@ public class GeoNode : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if (!geography.enableGizmos) return;
         if (!geography.showGeoNodeConnectionsGizmos)
         {
             Gizmos.color = Color.white;
@@ -223,7 +238,7 @@ public class GeoNode : MonoBehaviour
     public static GeoNode Spawn(Geography geography, Vector3 position, float gizmoSize)
     {
         var go = new GameObject();
-        go.transform.SetParent(geography.transform);
+        go.transform.SetParent(geography.nodesParent.transform);
         go.transform.position = position;
         var node = go.AddComponent<GeoNode>();
         node.geography = geography;
@@ -313,5 +328,24 @@ public class GeoNode : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public GeoNode GetRotationNeighbour(Rotation rotation, GeoNode inNeighbour)
+    {
+        int step = 2 * ((int)rotation) - 1;
+        int idx = neighbours.IndexOf(inNeighbour);
+        if (idx < 0) return null;
+        idx += step;
+        var n = neighbours.Count;
+        if (idx < 0)
+        {
+            idx += n;
+        } else if (idx >= n)
+        {
+            idx -= n;
+        }
+        var outNeighbour = neighbours[idx];
+        if (outNeighbour == inNeighbour) return null;
+        return outNeighbour;
     }
 }

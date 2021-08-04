@@ -5,9 +5,12 @@ using System.Linq;
 
 public class Geography : MonoBehaviour
 {
+    public bool enableGizmos = true;
     public bool showGeoNodeGizmos = true;
     public bool showGeoNodeEdgeGizmos = true;
     public bool showGeoNodeConnectionsGizmos = true;
+
+    public Transform nodesParent;
 
     [Range(0.5f, 4)]
     public float gizmoSize = 1f;
@@ -15,6 +18,7 @@ public class Geography : MonoBehaviour
 
     List<GeoNode> nodes = new List<GeoNode>();
     public List<LandscaperBase> creation = new List<LandscaperBase>();
+    public List<MesherBase> meshers = new List<MesherBase>();
 
     public enum NodeFilter { Any, Water, Land, ZeroOrWater };
 
@@ -140,6 +144,12 @@ public class Geography : MonoBehaviour
         for (int i = 0, l = creation.Count; i < l; i++)
         {
             creation[i].Apply(this);
+            yield return new WaitForSeconds(interStepPause);
+        }
+        enableGizmos = false;
+        for (int i = 0, l = meshers.Count; i < l; i++)
+        {
+            meshers[i].Create(this);
             yield return new WaitForSeconds(interStepPause);
         }
     }
