@@ -10,7 +10,7 @@ public class Smoother : LandscaperBase
     public AnimationCurve averageAttraction;
     public bool allowCrossSeaSurfaceInfluence = true;
 
-    protected override void Landscape(Geography geography)
+    protected override IEnumerator<float> Landscape(Geography geography)
     {
         System.Func<GeoNode, bool> filter = node =>
         {
@@ -40,6 +40,7 @@ public class Smoother : LandscaperBase
             var newDepth = Mathf.Lerp(node.Elevation, avg, averageAttraction.Evaluate(Random.value));
             // Debug.Log(string.Format("{0}: y {1}, n-avg {2} -> {3}", node.name, position.y, avg, newY));            
             node.Elevation = newDepth;
+            if (i % 500 == 0) yield return (float)i / candidates.Length;
         }
     }
 

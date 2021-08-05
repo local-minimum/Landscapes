@@ -14,7 +14,7 @@ public class CircleElevator : LandscaperBase
     public bool internalCircles = false;
     public Gridder gridder;
 
-    protected override void Landscape(Geography geography)
+    protected override IEnumerator<float> Landscape(Geography geography)
     {
         var boundingRect = geography.BoundingRect;
         var nNodes = geography.NodeCount;
@@ -43,6 +43,7 @@ public class CircleElevator : LandscaperBase
             {
                 circles = i;
             }
+            if (i % 4 == 0) yield return (float)i / circles;
         }        
     }
 }

@@ -8,10 +8,12 @@ public class Gridder : LandscaperBase
     public int height = 20;
     public float spacing = 1;
 
-    protected override void Landscape(Geography geography)
+    protected override IEnumerator<float> Landscape(Geography geography)
     {
         CreateGrid(geography);
+        yield return 0.5f;
         ConnectGrid(geography);
+        yield return 1.0f;
     }
 
 

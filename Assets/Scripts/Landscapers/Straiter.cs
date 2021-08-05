@@ -69,13 +69,16 @@ public class Straiter : LandscaperBase
         }
     }
 
-    protected override void Landscape(Geography geography)
+    protected override IEnumerator<float> Landscape(Geography geography)
     {
-        var (seaLookup, seaSizes) = LabelSeas(geography);        
-        if (seaSizes.Count <= 1) return;
-        var centerOfSeas = CalculateCenterOfSeas(seaLookup, seaSizes);
-        MakeStraits(geography, seaLookup, seaSizes, centerOfSeas);
-        Debug.Log(string.Format("Found {0} seas. Sizes {1}", seaSizes.Count, string.Join(", ", seaSizes)));
+        var (seaLookup, seaSizes) = LabelSeas(geography);
+        if (seaSizes.Count >= 2)
+        {
+            var centerOfSeas = CalculateCenterOfSeas(seaLookup, seaSizes);
+            yield return 0.5f;
+            MakeStraits(geography, seaLookup, seaSizes, centerOfSeas);
+            Debug.Log(string.Format("Found {0} seas. Sizes {1}", seaSizes.Count, string.Join(", ", seaSizes)));
+        }
     }
 
     (Dictionary<GeoNode, int> lookup, List<int> seaSizes) LabelSeas(Geography geography)

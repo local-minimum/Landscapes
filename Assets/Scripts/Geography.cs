@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
 public class Geography : MonoBehaviour
 {
+    public Text loadingText;
     public bool enableGizmos = true;
     public bool showGeoNodeGizmos = true;
     public bool showGeoNodeEdgeGizmos = true;
@@ -143,7 +145,13 @@ public class Geography : MonoBehaviour
     {
         for (int i = 0, l = creation.Count; i < l; i++)
         {
-            creation[i].Apply(this);
+            var enumerator = creation[i].Apply(this);
+            while (enumerator.MoveNext())
+            {
+                var msg = string.Format("{0}: {1:n0}%", creation[i].description, enumerator.Current * 100f);
+                loadingText.text = msg;
+                yield return new WaitForSeconds(0f);
+            }
             yield return new WaitForSeconds(interStepPause);
         }
         enableGizmos = false;
@@ -152,6 +160,7 @@ public class Geography : MonoBehaviour
             meshers[i].Create(this);
             yield return new WaitForSeconds(interStepPause);
         }
+        loadingText.enabled = false;
     }
 
     private void OnDrawGizmosSelected()

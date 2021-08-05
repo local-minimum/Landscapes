@@ -20,7 +20,7 @@ public class EdgeLands : LandscaperBase
         | GeoNode.Direction.SE
         | GeoNode.Direction.NW;
 
-    protected override void Landscape(Geography geography)
+    protected override IEnumerator<float> Landscape(Geography geography)
     {
         System.Func<GeoNode, bool> filter = node =>
         {
@@ -53,7 +53,8 @@ public class EdgeLands : LandscaperBase
                     }
                 }
             }
-        }
+            if (i % 20 == 0) yield return (float)i / l;
+        }        
     }
 
     GeoNode AddNode(Geography geography, GeoNode node, GeoNode.Direction direction, float distance)

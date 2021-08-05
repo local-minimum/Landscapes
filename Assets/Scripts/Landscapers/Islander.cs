@@ -9,7 +9,7 @@ public class Islander : LandscaperBase
     public int islands = 20;
     public AnimationCurve heightDistribution;    
 
-    protected override void Landscape(Geography geography)
+    protected override IEnumerator<float> Landscape(Geography geography)
     {
         System.Func<GeoNode, bool> filter = node =>
         {
@@ -35,6 +35,8 @@ public class Islander : LandscaperBase
                 if (neighbours.Length == 0) break;
                 origin = neighbours[Random.Range(0, neighbours.Length)];
             };
+
+            if (i % 5 == 0) yield return (float) i / islands;
         }
     }
 }

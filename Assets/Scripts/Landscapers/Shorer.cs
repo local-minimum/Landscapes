@@ -69,7 +69,7 @@ public class Shorer : LandscaperBase
         }
     }
 
-    protected override void Landscape(Geography geography)
+    protected override IEnumerator<float> Landscape(Geography geography)
     {
         var visitedShores = new List<GeoNode>();
         var shores = geography.GetNodes(n => {
@@ -83,6 +83,7 @@ public class Shorer : LandscaperBase
             if (visitedShores.Contains(seed)) continue;
             var shoreEdges = CollectShoreEdges(seed, visitedShores);
             MakeShore(geography, shoreEdges);
+            yield return (float) i / shores.Length;
         }
     }
 

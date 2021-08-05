@@ -10,7 +10,7 @@ public class ShoreEroder : LandscaperBase
     public AnimationCurve depths;
     public AnimationCurve erosionDistance;
 
-    protected override void Landscape(Geography geography)
+    protected override IEnumerator<float> Landscape(Geography geography)
     {
         var nodes = geography
             .GetNodes(node => { var topo = node.topology; return topo.HasFlag(GeoNode.Topology.Shore) && topo.HasFlag(GeoNode.Topology.Land); })
@@ -30,6 +30,7 @@ public class ShoreEroder : LandscaperBase
                 node = neighbours[Random.Range(0, neighbours.Length)];
                 node.Elevation = depths.Evaluate(Random.value);
             }
+            if (i % 40 == 0) yield return (float)i / nodes.Length;
         }
     }
 }

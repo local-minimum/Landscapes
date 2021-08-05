@@ -6,7 +6,7 @@ public class Noiser : LandscaperBase
 {
     public Vector3 magnitude = new Vector3(0.2f, 0.2f, 0.2f);
 
-    protected override void Landscape(Geography geography)
+    protected override IEnumerator<float> Landscape(Geography geography)
     {
         for (int i=0, l=geography.NodeCount; i<l; i++)
         {
@@ -24,6 +24,7 @@ public class Noiser : LandscaperBase
                 noise.y = Mathf.Abs(noise.y);
             }
             node.transform.position += noise;
+            if (i % 500 == 0) yield return (float) i / l;            
         }
     }
 }

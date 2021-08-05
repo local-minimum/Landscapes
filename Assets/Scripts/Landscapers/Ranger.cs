@@ -14,13 +14,14 @@ public class Ranger : LandscaperBase
 
     public Geography.NodeFilter filter;
 
-    protected override void Landscape(Geography geography)
+    protected override IEnumerator<float> Landscape(Geography geography)
     {
         var nodes = geography.GetNodes(filter).ToArray();        
         for (int i = 0; i<ranges; i++)
         {
             var node = nodes[Random.Range(0, nodes.Length)];
             MakeRange(node);
+            if (i % 5 == 0) yield return (float) i / ranges;
         }
     }
 

@@ -7,15 +7,18 @@ public abstract class LandscaperBase : MonoBehaviour
 
     public string description;
     public bool active = true;
-    abstract protected void Landscape(Geography geography);
+    abstract protected IEnumerator<float> Landscape(Geography geography);
 
-    public void Apply(Geography geography)
-    {
-        
+    public IEnumerator<float> Apply(Geography geography)
+    {        
         if (active)
         {
             Debug.Log(string.Format("Applying {0}", description));
-            Landscape(geography);
+            var enumerator = Landscape(geography);
+            while (enumerator.MoveNext())
+            {
+                yield return enumerator.Current;
+            }            
         } else
         {
             Debug.LogWarning(string.Format("Skipping {0}", description));
