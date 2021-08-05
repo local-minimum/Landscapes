@@ -14,6 +14,7 @@ public class Straiter : LandscaperBase
     public AnimationCurve angleCost;
     public AnimationCurve heightCost;
     public float costNoise = 0.1f;
+    public float pathNoiseProbability = 0.5f;
 
     struct StraitCandidate
     {
@@ -177,6 +178,18 @@ public class Straiter : LandscaperBase
                         var straitNode = candidate.path[i];
                         seaLookup[straitNode] = reachedSea;
                         straitNode.Elevation = depth;
+                        if (Random.value < pathNoiseProbability)
+                        {
+                            var extras = straitNode
+                                .GetNeighbours((n, neigh) => neigh.Is(Geography.NodeFilter.Land) && !candidate.path.Contains(neigh))
+                                .ToArray();
+                            if (extras.Length > 0)
+                            {
+                                var extra = extras[Random.Range(0, extras.Length)];
+                                seaLookup[extra] = reachedSea;
+                                extra.Elevation = depth;
+                            }
+                        }
                     }
 
                     // Make source sea target sea
