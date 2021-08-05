@@ -5,6 +5,7 @@ using System.Linq;
 
 public abstract class MesherBase : MonoBehaviour
 {
+    public string Description;
     abstract public void Create(Geography geography);
 
     protected List<int> GenerateTris(GeoNode[] nodes)

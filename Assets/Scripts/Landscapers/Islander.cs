@@ -36,7 +36,7 @@ public class Islander : LandscaperBase
                 origin = neighbours[Random.Range(0, neighbours.Length)];
             };
 
-            if (i % 5 == 0) yield return (float) i / islands;
+            if (i % 10 == 0) yield return (float) i / islands;
         }
     }
 }

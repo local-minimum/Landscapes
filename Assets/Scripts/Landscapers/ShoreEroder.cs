@@ -30,7 +30,7 @@ public class ShoreEroder : LandscaperBase
                 node = neighbours[Random.Range(0, neighbours.Length)];
                 node.Elevation = depths.Evaluate(Random.value);
             }
-            if (i % 40 == 0) yield return (float)i / nodes.Length;
+            if (i % 100 == 0) yield return (float)i / nodes.Length;
         }
     }
 }

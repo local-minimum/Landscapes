@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b0cef6f60b12f84f960ea391fd0fa4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Description: Create Land
   material: {fileID: 2100000, guid: 007ab6fbc1bfb214bba2a81113ea842f, type: 2}
 --- !u!23 &404615067
 MeshRenderer:
@@ -776,7 +777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93a0e028cbaf31b41858a87f06976b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Create grid
+  description: Create Grid
   active: 1
   width: 160
   height: 100
@@ -793,7 +794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97067cca6e3950a43a0d5253d543c8ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Perturb in plane
+  description: Apply Noise
   active: 1
   magnitude: {x: 0.4, y: 0.3, z: 0.4}
 --- !u!114 &1838253592
@@ -808,7 +809,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 174872dfa371a53458f00fa9c025a8c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Make depths
+  description: Depths
   active: 1
   circles: 120
   elevations:
@@ -857,7 +858,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 174872dfa371a53458f00fa9c025a8c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Make heights
+  description: Plateaus
   active: 1
   circles: 60
   elevations:
@@ -906,7 +907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77142132e4d5be045a1f2ef06ff082e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Edge is land
+  description: Extra Land
   active: 1
   gridder: {fileID: 1838253590}
   connectionTolerance: 1.67
@@ -922,7 +923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc20863d00047b46bfd1aad5273fc4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Make more small islands
+  description: Islands
   active: 1
   sizes: 0100000001000000020000000300000003000000030000000400000005000000
   islands: 50
@@ -962,7 +963,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65fa4790a240b90438fa2161d041233c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Remove some circle artifacts
+  description: Smoothen
   active: 1
   smoothActionProbability: 0.6
   actionDeltaThreshold: 0.5
@@ -1003,7 +1004,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888e553f026edfe41a45ebd50c1151a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Connect seas
+  description: Connect Seas
   active: 1
   straitProbability: 1
   sourceLocationWeight: 0
@@ -1088,7 +1089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b1d4410e3b61c74a883d3709b6c0f65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Erode shores
+  description: Erode Shores
   active: 1
   erosionProbability: 0.3
   depths:
@@ -1170,7 +1171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a99dd54cea1ee5a438d5a78117fe9012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Detailed shores
+  description: Detailed Shores
   active: 1
   angleTolerance: 10
   maxLength: 0.6
@@ -1221,6 +1222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63632bdc76c7cee49959c1a80d58b9d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Description: Create Water
   material: {fileID: 2100000, guid: ae586d9c811cad549b316364cb217c52, type: 2}
 --- !u!23 &2019510329
 MeshRenderer:

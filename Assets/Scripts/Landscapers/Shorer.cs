@@ -76,14 +76,15 @@ public class Shorer : LandscaperBase
             var topo = n.topology;
             return topo.HasFlag(GeoNode.Topology.Shore) && topo.HasFlag(GeoNode.Topology.Land);
         }).ToArray();
-
+        var j = 0;
         for (int i=0; i<shores.Length; i++)
         {
             var seed = shores[i];
             if (visitedShores.Contains(seed)) continue;
             var shoreEdges = CollectShoreEdges(seed, visitedShores);
-            MakeShore(geography, shoreEdges);
-            yield return (float) i / shores.Length;
+            MakeShore(geography, shoreEdges);            
+            if (j % 5 == 0) yield return (float) i / shores.Length;
+            j++;
         }
     }
 
