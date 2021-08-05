@@ -7,6 +7,7 @@ using System.Linq;
 [RequireComponent(typeof(MeshRenderer))]
 public class WaterMesher : MesherBase
 {
+    public float waterHeight = -0.05f;
     public Material material;
 
     public override void Create(Geography geography)
@@ -17,7 +18,7 @@ public class WaterMesher : MesherBase
         mesh.name = "Water";
         var nodes = geography.GetNodes(n => true).ToArray();
         Vector3[] verts = nodes
-            .Select(n => { var pos = n.transform.position; pos.y = 0; return pos; })
+            .Select(n => { var pos = n.transform.position; pos.y = waterHeight; return pos; })
             .ToArray();
 
         mesh.vertices = verts;
