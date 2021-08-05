@@ -5,7 +5,7 @@ using System.Linq;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
-public class LandMesher : MesherBase
+public class WaterMesher : MesherBase
 {
     public Material material;
 
@@ -14,17 +14,16 @@ public class LandMesher : MesherBase
         MeshFilter mf = GetComponent<MeshFilter>();
         MeshRenderer mr = GetComponent<MeshRenderer>();
         var mesh = new Mesh();
-        mesh.name = "Landmass";
+        mesh.name = "Water";
         var nodes = geography.GetNodes(n => true).ToArray();
         Vector3[] verts = nodes
-            .Select(n => n.transform.position)
+            .Select(n => { var pos = n.transform.position; pos.y = 0; return pos; })
             .ToArray();
 
         mesh.vertices = verts;
         mesh.triangles = GenerateTris(nodes).ToArray();
         mesh.RecalculateNormals();
-        mf.mesh = mesh;        
+        mf.mesh = mesh;
         if (material != null) mr.material = material;
     }
-
 }
