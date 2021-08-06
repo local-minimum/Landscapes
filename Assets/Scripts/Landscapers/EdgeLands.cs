@@ -32,7 +32,7 @@ public class EdgeLands : LandscaperBase
         for (int i =0, l=waterEdges.Length; i<l; i++)
         {
             var node = waterEdges[i];
-            var refDistance = gridder == null ? node.avgPlanarDistance : gridder.spacing;
+            var refDistance = gridder == null ? node.AveragePlanarDistance : gridder.spacing;
             var refDiagDistance = Mathf.Sqrt(2 * Mathf.Pow(refDistance, 2));
 
             var cardinalNeighbour = node

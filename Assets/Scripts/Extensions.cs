@@ -19,44 +19,44 @@ public static class Extensions
 
     }
 
-    public static readonly GeoNode.Direction[] Directions = new GeoNode.Direction[]
+    public static readonly NodeBase.Direction[] Directions = new NodeBase.Direction[]
     {
-        GeoNode.Direction.E,
-        GeoNode.Direction.NE,
-        GeoNode.Direction.N,
-        GeoNode.Direction.NW,
-        GeoNode.Direction.W,
-        GeoNode.Direction.SW,
-        GeoNode.Direction.S,
-        GeoNode.Direction.SE
+        NodeBase.Direction.E,
+        NodeBase.Direction.NE,
+        NodeBase.Direction.N,
+        NodeBase.Direction.NW,
+        NodeBase.Direction.W,
+        NodeBase.Direction.SW,
+        NodeBase.Direction.S,
+        NodeBase.Direction.SE
     };
 
-    public static float AsAngle(this GeoNode.Direction dir)
+    public static float AsAngle(this NodeBase.Direction dir)
     {
         switch (dir)
         {
-            case GeoNode.Direction.E:
+            case NodeBase.Direction.E:
                 return 0;
-            case GeoNode.Direction.NE:
+            case NodeBase.Direction.NE:
                 return 45;
-            case GeoNode.Direction.N:
+            case NodeBase.Direction.N:
                 return 90;
-            case GeoNode.Direction.NW:
+            case NodeBase.Direction.NW:
                 return 135;
-            case GeoNode.Direction.W:
+            case NodeBase.Direction.W:
                 return 180;
-            case GeoNode.Direction.SW:
+            case NodeBase.Direction.SW:
                 return 225;
-            case GeoNode.Direction.S:
+            case NodeBase.Direction.S:
                 return 270;
-            case GeoNode.Direction.SE:
+            case NodeBase.Direction.SE:
                 return 315;
         }
         throw new System.ArgumentException(string.Format("{0} has no angle.", dir));
         
     }
 
-    public static int AsOrdinal(this GeoNode.Direction dir)
+    public static int AsOrdinal(this NodeBase.Direction dir)
     {
         for (int i = 0; i<Directions.Length; i++)
         {
@@ -65,7 +65,7 @@ public static class Extensions
         return -1;
     }
 
-    public static float Angle(this GeoNode.Direction dir, GeoNode.Direction other)
+    public static float Angle(this NodeBase.Direction dir, NodeBase.Direction other)
     {
         var a = dir.AsOrdinal();
         var b = other.AsOrdinal();
@@ -76,10 +76,10 @@ public static class Extensions
         return Mathf.Min(d1, d2) * 45f;
     }
 
-    public static List<GeoNode.Direction> WithNeighbours(this GeoNode.Direction dir, int flanking)
+    public static List<NodeBase.Direction> WithNeighbours(this NodeBase.Direction dir, int flanking)
     {
         var ordinal = dir.AsOrdinal();
-        var directions = new List<GeoNode.Direction>();
+        var directions = new List<NodeBase.Direction>();
         for (int i=-flanking; i<=flanking; i++)
         {
             var idx = i + ordinal;
@@ -89,14 +89,14 @@ public static class Extensions
         return directions;
     }
 
-    public static GeoNode.Direction Inverted(this GeoNode.Direction dir)
+    public static NodeBase.Direction Inverted(this NodeBase.Direction dir)
     {
         var ordinal = dir.AsOrdinal();
-        if (ordinal == -1) return GeoNode.Direction.NONE;
+        if (ordinal == -1) return NodeBase.Direction.NONE;
         return Directions[(ordinal + 4) % 8];
     }
 
-    public static List<GeoNode.Direction> CCWFrom(this GeoNode.Direction dir, bool includeSelf)
+    public static List<NodeBase.Direction> CCWFrom(this NodeBase.Direction dir, bool includeSelf)
     {        
         var ordinal = dir.AsOrdinal();
         var after = Directions.Skip(ordinal + 1).Take(8 - ordinal).ToList();
@@ -104,28 +104,28 @@ public static class Extensions
         return after;        
     }
 
-    public static bool IsCardinal(this GeoNode.Direction dir)
+    public static bool IsCardinal(this NodeBase.Direction dir)
     {
-        return dir == GeoNode.Direction.E
-            || dir == GeoNode.Direction.W
-            || dir == GeoNode.Direction.N
-            || dir == GeoNode.Direction.S;
+        return dir == NodeBase.Direction.E
+            || dir == NodeBase.Direction.W
+            || dir == NodeBase.Direction.N
+            || dir == NodeBase.Direction.S;
     }
 
-    public static GeoNode.Direction[] AllowedRotations(this GeoNode.Direction dir, GeoNode.Rotation rotation)
+    public static NodeBase.Direction[] AllowedRotations(this NodeBase.Direction dir, NodeBase.Rotation rotation)
     {
         switch (rotation) {
-            case GeoNode.Rotation.CW: 
+            case NodeBase.Rotation.CW: 
                 switch (dir)
                 {
-                    case GeoNode.Direction.E:
-                        return new GeoNode.Direction[] { GeoNode.Direction.SE, GeoNode.Direction.S, GeoNode.Direction.SW, GeoNode.Direction.W};
-                    case GeoNode.Direction.SE:
-                        return new GeoNode.Direction[] { GeoNode.Direction.S, GeoNode.Direction.SW, GeoNode.Direction.W, GeoNode.Direction.NW};
-                    case GeoNode.Direction.S:
-                        return new GeoNode.Direction[] { GeoNode.Direction.SW, GeoNode.Direction.W, GeoNode.Direction.NW, GeoNode.Direction.N };
-                    case GeoNode.Direction.SW:
-                        return new GeoNode.Direction[] { GeoNode.Direction.W, GeoNode.Direction.NW, GeoNode.Direction.N, GeoNode.Direction.NE };
+                    case NodeBase.Direction.E:
+                        return new NodeBase.Direction[] { NodeBase.Direction.SE, NodeBase.Direction.S, NodeBase.Direction.SW, NodeBase.Direction.W};
+                    case NodeBase.Direction.SE:
+                        return new NodeBase.Direction[] { NodeBase.Direction.S, NodeBase.Direction.SW, NodeBase.Direction.W, NodeBase.Direction.NW};
+                    case NodeBase.Direction.S:
+                        return new NodeBase.Direction[] { NodeBase.Direction.SW, NodeBase.Direction.W, NodeBase.Direction.NW, NodeBase.Direction.N };
+                    case NodeBase.Direction.SW:
+                        return new NodeBase.Direction[] { NodeBase.Direction.W, NodeBase.Direction.NW, NodeBase.Direction.N, GeoNode.Direction.NE };
                     case GeoNode.Direction.W:
                         return new GeoNode.Direction[] { GeoNode.Direction.NW, GeoNode.Direction.N, GeoNode.Direction.NE, GeoNode.Direction.E };
                     case GeoNode.Direction.NW:
@@ -161,9 +161,9 @@ public static class Extensions
         return new GeoNode.Direction[0];
     }
 
-    public static GeoNode.Direction AsDirection(this IEnumerable<GeoNode.Direction> dirs)
+    public static NodeBase.Direction AsDirection(this IEnumerable<GeoNode.Direction> dirs)
     {
-        var dir = GeoNode.Direction.NONE;
+        var dir = NodeBase.Direction.NONE;
         foreach (var d in dirs)
         {
             dir |= d;

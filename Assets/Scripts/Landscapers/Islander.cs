@@ -14,7 +14,7 @@ public class Islander : LandscaperBase
         System.Func<GeoNode, bool> filter = node =>
         {
             var topology = node.topology;
-            return topology.HasFlag(GeoNode.Topology.Water) && topology.HasFlag(GeoNode.Topology.Main);
+            return topology.HasFlag(NodeBase.Topology.Water) && topology.HasFlag(NodeBase.Topology.Main);
         };
         var openSeaNodes = geography.GetNodes(filter).ToList();        
         System.Func<GeoNode, GeoNode, bool> openSeaNeighbours = (node, neighbour) =>

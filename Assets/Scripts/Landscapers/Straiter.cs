@@ -163,13 +163,13 @@ public class Straiter : LandscaperBase
                 var possible = edges.nodes.Where(e => e.node != null && !visited.Contains(e.node)).ToArray();
 
                 // Reached another sea
-                var destinations = possible.Where(e => e.node.topology.HasFlag(GeoNode.Topology.Water)).ToArray();
+                var destinations = possible.Where(e => e.node.topology.HasFlag(NodeBase.Topology.Water)).ToArray();
                 if (destinations.Length > 0)
                 {
                     foundSea = true;
                     var destination = destinations[Random.Range(0, destinations.Length)].node;
                     //Debug.Log(string.Format("Found strait {0} => {1}", string.Join(" => ", candidate.path.Select(n => n.name)), destination.name));
-                    var depth = Mathf.Max(destination.Elevation, candidate.Source.Elevation);
+                    var depth = Mathf.Min(Mathf.Max(destination.Elevation, candidate.Source.Elevation), -0.25f);
                     var reachedSea = seaLookup[destination];
                     Debug.Log(string.Format("Sea {0} connected to sea {1}", sea, reachedSea));
                     // Make strait watery and of reached sea

@@ -5,6 +5,7 @@ using System.Linq;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
+[RequireComponent(typeof(MeshCollider))]
 public class WaterMesher : MesherBase
 {
     public float waterHeight = -0.05f;
@@ -14,6 +15,7 @@ public class WaterMesher : MesherBase
     {
         MeshFilter mf = GetComponent<MeshFilter>();
         MeshRenderer mr = GetComponent<MeshRenderer>();
+        MeshCollider mc = GetComponent<MeshCollider>();
         var mesh = new Mesh();
         mesh.name = "Water";
         var nodes = geography.GetNodes(n => true).ToArray();
@@ -26,5 +28,6 @@ public class WaterMesher : MesherBase
         mesh.RecalculateNormals();
         mf.mesh = mesh;
         if (material != null) mr.material = material;
+        mc.sharedMesh = mesh;
     }
 }

@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class Geography : MonoBehaviour
 {
+    public delegate void WorldReadyEvent(Geography geography);
+    public static event WorldReadyEvent OnWorldReady;
+
     public Text loadingText;
     public bool enableGizmos = true;
     public bool showGeoNodeGizmos = true;
@@ -161,6 +164,7 @@ public class Geography : MonoBehaviour
             yield return new WaitForSeconds(interStepPause);
         }
         loadingText.enabled = false;
+        OnWorldReady?.Invoke(this);
     }
 
     private void OnDrawGizmosSelected()
