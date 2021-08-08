@@ -82,7 +82,12 @@ public class Shorer : LandscaperBase
             var seed = shores[i];
             if (visitedShores.Contains(seed)) continue;
             var shoreEdges = CollectShoreEdges(seed, visitedShores);
-            MakeShore(geography, shoreEdges);            
+            if (shoreEdges.Count > 200) yield return ((float)i + 1) / shores.Length;
+            var enumerator = MakeShore(geography, shoreEdges);
+            while (enumerator.MoveNext())
+            {
+                yield return (i + enumerator.Current) / shores.Length;
+            }
             if (j % 5 == 0) yield return (float) i / shores.Length;
             j++;
         }
@@ -157,33 +162,37 @@ public class Shorer : LandscaperBase
         return edges;
     }
 
-    void MakeShore(Geography geography, List<ShoreEdge> edges)
+    IEnumerator<float> MakeShore(Geography geography, List<ShoreEdge> edges)
     {
-        if (edges.Count < 2) return;
-        var prevEdge = edges[0];
-        var prevNode = GeoNode.Spawn(geography, prevEdge.InterpolatedShorePoint(Random.Range(minLength, maxLength)), gizmoSize);
-        var firstNode = prevNode;
-        geography.AddNodeUnsafe(prevNode);
-        prevEdge.Inject(prevNode);
-
-        for (int i=1, l=edges.Count; i<l; i++)
+        if (edges.Count > 1)
         {
-            var edge = edges[i];
-            var triangle = edge.Triangle(prevEdge);
-            var node = GeoNode.Spawn(geography, edge.InterpolatedShorePoint(Random.Range(minLength, maxLength)), gizmoSize);
-            geography.AddNodeUnsafe(node);
-            edge.Inject(node);
+            var prevEdge = edges[0];
+            var prevNode = GeoNode.Spawn(geography, prevEdge.InterpolatedShorePoint(Random.Range(minLength, maxLength)), gizmoSize);
+            var firstNode = prevNode;
+            geography.AddNodeUnsafe(prevNode);
+            prevEdge.Inject(prevNode);
 
-            var internalNode = MakeTriangleInternalNode(geography, triangle, Mathf.Min(edge.PlanarDistance, prevEdge.PlanarDistance));
-            internalNode.AddNeighbour(node);
-            internalNode.AddNeighbour(prevNode);
-            prevNode = node;
-            prevEdge = edge;
+            for (int i = 1, l = edges.Count; i < l; i++)
+            {
+                var edge = edges[i];
+                var triangle = edge.Triangle(prevEdge);
+                var node = GeoNode.Spawn(geography, edge.InterpolatedShorePoint(Random.Range(minLength, maxLength)), gizmoSize);
+                geography.AddNodeUnsafe(node);
+                edge.Inject(node);
+
+                var internalNode = MakeTriangleInternalNode(geography, triangle, Mathf.Min(edge.PlanarDistance, prevEdge.PlanarDistance));
+                internalNode.AddNeighbour(node);
+                internalNode.AddNeighbour(prevNode);
+                prevNode = node;
+                prevEdge = edge;
+
+                if ((i % 200) == 0) yield return i / 4f;
+            }
+
+            var finalNode = MakeTriangleInternalNode(geography, prevEdge.Triangle(edges[0]), Mathf.Min(edges[0].PlanarDistance, prevEdge.PlanarDistance));
+            finalNode.AddNeighbour(prevNode);
+            finalNode.AddNeighbour(firstNode);
         }
-
-        var finalNode = MakeTriangleInternalNode(geography, prevEdge.Triangle(edges[0]), Mathf.Min(edges[0].PlanarDistance, prevEdge.PlanarDistance));
-        finalNode.AddNeighbour(prevNode);
-        finalNode.AddNeighbour(firstNode);
     }
 
     GeoNode MakeTriangleInternalNode(Geography geography, GeoNode[] triangle, float refEdgeLength)
