@@ -919,29 +919,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Plateaus
   active: 1
-  circles: 60
+  circles: 140
   elevations:
-  - 0
-  - 1
+  - 0.5
   - 2
   - 3
+  - 5
   radiusDistribution:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 3
-      outSlope: 3
+      inSlope: 5
+      outSlope: 5
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 4
-      inSlope: 3
-      outSlope: 3
+      value: 6
+      inSlope: 5
+      outSlope: 5
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -1134,8 +1134,8 @@ MonoBehaviour:
   active: 1
   continuationProbability: 0.99
   continuationProbDecay: 0.05
-  magnitude: 6
-  ranges: 30
+  magnitude: 7
+  ranges: 60
   filter: 2
 --- !u!114 &1838253599
 MonoBehaviour:
