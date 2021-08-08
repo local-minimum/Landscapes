@@ -15,7 +15,10 @@ public class Boat : MonoBehaviour
 
     [SerializeField]
     List<Collider> floaters = new List<Collider>();
+
     [SerializeField]
+    GameObject grounderGO;
+
     List<Collider> grounders = new List<Collider>();
     Dictionary<Collider, CollisionType> colliding = new Dictionary<Collider, CollisionType>();
 
@@ -27,6 +30,7 @@ public class Boat : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         var worldCam = FindObjectOfType<AreaViewCamera>();
         if (worldCam != null) worldCam.gameObject.SetActive(false);
+        grounders.AddRange(grounderGO.GetComponents<Collider>());
     }
 
     public bool Floating
