@@ -1253,14 +1253,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Settling
   active: 1
-  settlements: 50
+  settlements: 80
   maxWeight: 100
-  minWeightSelected: 5
+  minWeightSelected: 25
   shoreWeight: 1
   openSeaWeight: 3
   landBaseWeight: 1.5
   mountainWeight: 5
   deltaHeightForMountain: 2
+  bonusWeightThreshold: 80
+  bonusSearchDepth: 3
+  bonusMultiplier: 3
 --- !u!1 &2019510326
 GameObject:
   m_ObjectHideFlags: 0
