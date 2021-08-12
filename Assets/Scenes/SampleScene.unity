@@ -764,6 +764,7 @@ GameObject:
   - component: {fileID: 1838253599}
   - component: {fileID: 1838253600}
   - component: {fileID: 1838253601}
+  - component: {fileID: 1838253602}
   m_Layer: 0
   m_Name: Geography
   m_TagString: Untagged
@@ -821,6 +822,7 @@ MonoBehaviour:
   - {fileID: 1838253591}
   - {fileID: 1838253596}
   - {fileID: 1838253601}
+  - {fileID: 1838253602}
   meshers:
   - {fileID: 404615066}
   - {fileID: 2019510328}
@@ -1237,6 +1239,28 @@ MonoBehaviour:
   maxLength: 0.6
   minLength: 0.05
   gizmoSize: 1
+--- !u!114 &1838253602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838253587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 447db21d1c984444c811906ffe1b8041, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: Settling
+  active: 1
+  settlements: 50
+  maxWeight: 100
+  minWeightSelected: 5
+  shoreWeight: 1
+  openSeaWeight: 3
+  landBaseWeight: 1.5
+  mountainWeight: 5
+  deltaHeightForMountain: 2
 --- !u!1 &2019510326
 GameObject:
   m_ObjectHideFlags: 0
