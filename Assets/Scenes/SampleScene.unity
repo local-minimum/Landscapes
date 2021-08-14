@@ -342,6 +342,7 @@ MonoBehaviour:
   equator: 0
   distance: 10000
   latitudeAmplitude: 50
+  energyFlux: 1
   dayLight: {r: 1, g: 0.9568628, b: 0.83921576, a: 1}
   twilightLight: {r: 0.7830189, g: 0.39865556, b: 0, a: 1}
   nightLight: {r: 0, g: 0.005525, b: 0.05882353, a: 1}
@@ -773,6 +774,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1780939043}
   - component: {fileID: 1780939044}
+  - component: {fileID: 1780939045}
   m_Layer: 0
   m_Name: StandardTime
   m_TagString: Untagged
@@ -807,8 +809,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   longitudesPerUnit: 0.1
+  latitudesPerUnit: 0.2
   secondsPerDay: 30
   daysPerYear: 20
+--- !u!114 &1780939045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1780939042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6aae23542ef6b24fb36b36cd07c55ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceTemperature: -42
+  maxLatitudeOffsetFactor: 0.1
+  surfaceCoolingFactor: 0.5
 --- !u!1 &1838253587
 GameObject:
   m_ObjectHideFlags: 0
@@ -832,6 +850,7 @@ GameObject:
   - component: {fileID: 1838253600}
   - component: {fileID: 1838253601}
   - component: {fileID: 1838253602}
+  - component: {fileID: 1838253603}
   m_Layer: 0
   m_Name: Geography
   m_TagString: Untagged
@@ -890,6 +909,7 @@ MonoBehaviour:
   - {fileID: 1838253596}
   - {fileID: 1838253601}
   - {fileID: 1838253602}
+  - {fileID: 1838253603}
   meshers:
   - {fileID: 404615066}
   - {fileID: 2019510328}
@@ -1320,7 +1340,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Settling
   active: 1
-  settlements: 80
+  settlements: 60
   maxWeight: 100
   minWeightSelected: 25
   shoreWeight: 1
@@ -1331,6 +1351,20 @@ MonoBehaviour:
   bonusWeightThreshold: 80
   bonusSearchDepth: 3
   bonusMultiplier: 5
+--- !u!114 &1838253603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838253587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dc37156d2434d444a679b0ed2697797, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: Preparing climate
+  active: 1
 --- !u!1 &2019510326
 GameObject:
   m_ObjectHideFlags: 0

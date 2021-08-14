@@ -46,8 +46,14 @@ public struct DateTime
 
 public class StandardTime : MonoBehaviour
 {
+    const float TWO_PI = Mathf.PI * 2;
+    const float HALF_PI = Mathf.PI * 0.5f;
+
     [SerializeField]
     float longitudesPerUnit = 1f;
+
+    [SerializeField]
+    float latitudesPerUnit = 1f;
 
     [SerializeField]
     float secondsPerDay = 30f;
@@ -55,7 +61,6 @@ public class StandardTime : MonoBehaviour
     [SerializeField, Range(5, 300)]
     int daysPerYear = 20;
 
-    const float TWO_PI = Mathf.PI * 2;
     public static StandardTime instance { get; private set; }
 
     public int Year { get; private set; }
@@ -69,11 +74,24 @@ public class StandardTime : MonoBehaviour
 
     Rect worldBounds;
     bool running;
+    public float Latitudes(float units)
+    {
+        return units * latitudesPerUnit;
+    }
+
+    public float Longitudes(float units)
+    {
+        return units * longitudesPerUnit;
+    }
 
     public float LocalTime(Vector3 position)
+    {        
+        return Time + Longitudes(position.x) * Mathf.Deg2Rad;
+    }
+
+    public float LocalSunInclination(Vector3 positon)
     {
-        float lon = position.x * longitudesPerUnit;
-        return Time + lon * Mathf.Deg2Rad;
+        return LocalTime(positon) - HALF_PI;
     }
 
     public DateTime LocalDateTime(Vector3 position)
@@ -82,7 +100,6 @@ public class StandardTime : MonoBehaviour
         
     }
 
-
     private void Awake()
     {
         if (instance == null)
@@ -90,7 +107,7 @@ public class StandardTime : MonoBehaviour
             instance = this;
         } else if (instance != this)
         {
-            Destroy(gameObject);
+            Destroy(this);
         }
     }
 
@@ -121,6 +138,15 @@ public class StandardTime : MonoBehaviour
         } else
         {
             Debug.Log(string.Format("Map covers {0:F1} longitudes", worldBounds.width  * longitudesPerUnit));
+        }
+        if (worldBounds.height * latitudesPerUnit > 180)
+        {
+            Debug.LogWarning(string.Format("Adjusted latitude per unit because {0:F1} degree planet", worldBounds.height * latitudesPerUnit));
+            latitudesPerUnit = 360 / worldBounds.height;
+        }
+        else
+        {
+            Debug.Log(string.Format("Map covers {0:F1} latitudes", worldBounds.height * latitudesPerUnit));
         }
     }
 

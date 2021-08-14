@@ -15,6 +15,8 @@ public class Sun : MonoBehaviour
     [SerializeField]
     float latitudeAmplitude = 50f;
 
+    public float energyFlux = 1;
+
     public static Sun instance { get; private set; }
 
     Light light;
@@ -51,31 +53,31 @@ public class Sun : MonoBehaviour
     private void Update()
     {
         float halfTwilightDuration = twilightDuration * 0.5f;
-        var time = StandardTime.instance.LocalTime(playerPosition.position) - HALF_PI;
+        var sunRadians = StandardTime.instance.LocalSunInclination(playerPosition.position);
         var z = latitudeAmplitude * -1 * Mathf.Cos(StandardTime.instance.YearProgres);
-        var y = distance * Mathf.Sin(time);
-        var x = distance * Mathf.Cos(time);
+        var y = distance * Mathf.Sin(sunRadians);
+        var x = distance * Mathf.Cos(sunRadians);
         transform.position = new Vector3(x, y, z);
         transform.LookAt(playerPosition);
 
-        if (time < -halfTwilightDuration)
+        if (sunRadians < -halfTwilightDuration)
         {
             light.color = nightLight;
-        } else if (time < 0)
+        } else if (sunRadians < 0)
         {
-            light.color = Color.Lerp(nightLight, twilightLight, (time - halfTwilightDuration) / halfTwilightDuration);
-        } else if (time < twilightDuration)
+            light.color = Color.Lerp(nightLight, twilightLight, (sunRadians - halfTwilightDuration) / halfTwilightDuration);
+        } else if (sunRadians < twilightDuration)
         {
-            light.color = Color.Lerp(twilightLight, dayLight, time / halfTwilightDuration);
-        } else if (time < Mathf.PI - halfTwilightDuration)
+            light.color = Color.Lerp(twilightLight, dayLight, sunRadians / halfTwilightDuration);
+        } else if (sunRadians < Mathf.PI - halfTwilightDuration)
         {
             light.color = dayLight;
-        } else if (time < Mathf.PI)
+        } else if (sunRadians < Mathf.PI)
         {
-            light.color = Color.Lerp(dayLight, twilightLight, (time - (Mathf.PI - halfTwilightDuration)) / halfTwilightDuration);
-        } else if (time < Mathf.PI + halfTwilightDuration)
+            light.color = Color.Lerp(dayLight, twilightLight, (sunRadians - (Mathf.PI - halfTwilightDuration)) / halfTwilightDuration);
+        } else if (sunRadians < Mathf.PI + halfTwilightDuration)
         {
-            light.color = Color.Lerp(twilightLight, nightLight, (time - Mathf.PI) / halfTwilightDuration);
+            light.color = Color.Lerp(twilightLight, nightLight, (sunRadians - Mathf.PI) / halfTwilightDuration);
         } else
         {
             light.color = nightLight;

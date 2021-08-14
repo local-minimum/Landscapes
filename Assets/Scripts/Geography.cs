@@ -61,13 +61,13 @@ public class Geography : MonoBehaviour
                         Debug.Log(string.Format("{0}: Too far from {1}'s neighbour {2} to be neighbours {3}", node.name, neighbour.name, nextNeighbour.name, nextNeighbour.PlanarDistance(node)));
                     } 
                     */
-                    if (filterEdges.HasFlag(GeoNode.DirectionFromNodes(node, neighbour))) node.AddNeighbour(neighbour);
+                    if (filterEdges.HasFlag(NodeBase.DirectionFromNodes(node, neighbour))) node.AddNeighbour(neighbour);
                     trail.Add(nextNeighbour);
                     break;
                 }
 
-                if (filterEdges.HasFlag(GeoNode.DirectionFromNodes(node, neighbour))) node.AddNeighbour(neighbour);
-                dir = GeoNode.DirectionFromNodes(neighbour, nextNeighbour);
+                if (filterEdges.HasFlag(NodeBase.DirectionFromNodes(node, neighbour))) node.AddNeighbour(neighbour);
+                dir = NodeBase.DirectionFromNodes(neighbour, nextNeighbour);
                 neighbour = nextNeighbour;
                 if (j > 20)
                 {
