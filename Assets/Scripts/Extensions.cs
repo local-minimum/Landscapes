@@ -5,6 +5,7 @@ using System.Linq;
 
 public static class Extensions
 {
+    #region Rect
     public static Vector2 RandomPoint(this Rect r) {
         var x = Random.Range(r.xMin, r.xMax);
         var y = Random.Range(r.yMin, r.yMax);
@@ -19,6 +20,13 @@ public static class Extensions
 
     }
 
+    public static Vector2 ScaledPosition(this Rect r, Vector2 pos)
+    {
+        return new Vector2((pos.x - r.xMin) / r.width, (pos.y - r.yMin) / r.height);
+    }
+    #endregion Rect
+
+    #region Direction
     public static readonly NodeBase.Direction[] Directions = new NodeBase.Direction[]
     {
         NodeBase.Direction.E,
@@ -170,4 +178,5 @@ public static class Extensions
         }
         return dir;
     }
+    #endregion Direction
 }

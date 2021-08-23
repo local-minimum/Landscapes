@@ -46,6 +46,7 @@ public class Climatology : MonoBehaviour
         }
         var node = GetComponent<GeoNode>();
         isLand = node.Is(Geography.NodeFilter.Land);
+        DistanceToShore = node.topology.HasFlag(NodeBase.Topology.Shore) ? 0 : 1;
     }
 
     private void Update()
