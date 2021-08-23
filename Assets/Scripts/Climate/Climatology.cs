@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Climatology : MonoBehaviour
 {
-    public const float MAX_LAT_EFFECT_DISTANCE = 150;
-
     public bool isLand
     {
         get; private set;
@@ -22,6 +20,48 @@ public class Climatology : MonoBehaviour
         private set;
     }
     
+    public float Latitude
+    {
+        get;
+        private set;
+    }
+
+    public float Longitude
+    {
+        get;
+        private set;
+    }
+
+    public float LocalTime
+    {
+        get
+        {
+            return StandardTime.instance.LocalTime(transform.position);
+        }
+    }
+
+    public string LocalTimeHuman
+    {
+        get
+        {
+            var hours = LocalTime / (Mathf.PI * 2) * 24;
+            var localHours = Mathf.FloorToInt(hours);
+            if (localHours < 0) localHours += 24;
+            if (localHours > 23) localHours -= 24;
+            if (hours < 0) hours += 24;
+            var localMinuts = Mathf.FloorToInt((hours * 60) % 60);
+            return string.Format("{0:D2}:{1:D2}", localHours, localMinuts);
+        }
+    }
+
+    public float SunInclination
+    {
+        get
+        {            
+            return StandardTime.instance.LocalSunInclination(transform.position);
+        }
+    }
+
     static bool running;
 
     private void OnEnable()
@@ -47,6 +87,8 @@ public class Climatology : MonoBehaviour
         var node = GetComponent<GeoNode>();
         isLand = node.Is(Geography.NodeFilter.Land);
         DistanceToShore = node.topology.HasFlag(NodeBase.Topology.Shore) ? 0 : 1;
+        Latitude = node.Latitude;
+        Longitude = node.Longitude;
     }
 
     private void Update()
@@ -57,9 +99,7 @@ public class Climatology : MonoBehaviour
 
     void UpdateTemperature()
     {
-        float latOffset = StandardTime.instance.Latitudes(Mathf.Abs(transform.position.z - Sun.instance.transform.position.z));
-        float latEffect = Mathf.Lerp(1, GlobalClimate.instance.maxLatitudeOffsetFactor, latOffset / MAX_LAT_EFFECT_DISTANCE);
-        float sunRadiationFactor = Mathf.Max(0, Mathf.Sin(StandardTime.instance.LocalSunInclination(transform.position))) * latEffect;
+        var sunRadiationFactor = Mathf.Max(0, Mathf.Sin(SunInclination));
         Temperature += (sunRadiationFactor * Sun.instance.energyFlux) * Time.deltaTime;
         Temperature -= (Temperature - GlobalClimate.instance.referenceTemperature) * GlobalClimate.instance.surfaceCoolingFactor * Time.deltaTime;
     }

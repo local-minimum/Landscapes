@@ -48,6 +48,7 @@ public class StandardTime : MonoBehaviour
 {
     const float TWO_PI = Mathf.PI * 2;
     const float HALF_PI = Mathf.PI * 0.5f;
+    const float ONE_N_HALF_PI = Mathf.PI * 1.5f;
 
     [SerializeField]
     float longitudesPerUnit = 1f;
@@ -74,24 +75,47 @@ public class StandardTime : MonoBehaviour
 
     Rect worldBounds;
     bool running;
-    public float Latitudes(float units)
+
+    public float Latitude(Vector3 pos)
+    {
+        return DistanceToLatitudes(pos.z - transform.position.z);
+    }
+
+    public float Longitude(Vector3 pos)
+    {
+        return DistanceToLongitudes(pos.z - transform.position.z);
+    }
+
+    public float DistanceToLatitudes(float units)
     {
         return units * latitudesPerUnit;
     }
 
-    public float Longitudes(float units)
+    public float DistanceToLongitudes(float units)
     {
         return units * longitudesPerUnit;
     }
 
     public float LocalTime(Vector3 position)
     {        
-        return Time + Longitudes(position.x) * Mathf.Deg2Rad;
+        return Time + Longitude(position) * Mathf.Deg2Rad;
     }
 
     public float LocalSunInclination(Vector3 positon)
     {
-        return LocalTime(positon) - HALF_PI;
+        var lt = LocalTime(positon);
+        if (lt < 0)
+        {
+            lt += TWO_PI;
+        } else if (lt >= TWO_PI)
+        {
+            lt -= TWO_PI;
+        }
+        if (lt < Mathf.PI)
+        {
+            return lt - HALF_PI;
+        }
+        return ONE_N_HALF_PI - lt;
     }
 
     public DateTime LocalDateTime(Vector3 position)

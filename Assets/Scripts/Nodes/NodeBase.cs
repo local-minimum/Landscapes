@@ -156,6 +156,23 @@ public abstract class NodeBase : MonoBehaviour
     #endregion
 
     #region Planar Coordinates
+
+    public float Latitude
+    {
+        get
+        {
+            return StandardTime.instance.Latitude(transform.position);
+        }
+    }
+
+    public float Longitude
+    {
+        get
+        {
+            return StandardTime.instance.Longitude(transform.position);
+        }
+    }
+
     public Vector2 PlanarPosition
     {
         get
