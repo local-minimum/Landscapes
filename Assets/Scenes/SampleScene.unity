@@ -185,7 +185,15 @@ MonoBehaviour:
     bgColor: {r: 0, g: 0, b: 0, a: 0}
     minColor: {r: 0, g: 0, b: 0, a: 0}
     maxColor: {r: 0, g: 0, b: 0, a: 0}
-  paintParameter: 1
+  SunAngleColorer:
+    bgColor: {r: 0, g: 0, b: 0, a: 0}
+    minColor: {r: 0, g: 0.70051455, b: 1, a: 1}
+    maxColor: {r: 0.9818833, g: 1, b: 0, a: 1}
+  SunLatOffsetColorer:
+    bgColor: {r: 0, g: 0, b: 0, a: 0}
+    minColor: {r: 1, g: 1, b: 1, a: 1}
+    maxColor: {r: 1, g: 0, b: 0, a: 1}
+  paintParameter: 3
 --- !u!114 &330964331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,6 +443,14 @@ MonoBehaviour:
     bgColor: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 1}
     minColor: {r: 0.4431373, g: 0.4431373, b: 0.4431373, a: 1}
     maxColor: {r: 1, g: 1, b: 1, a: 1}
+  SunAngleColorer:
+    bgColor: {r: 0, g: 0, b: 0, a: 0}
+    minColor: {r: 0, g: 0, b: 0, a: 0}
+    maxColor: {r: 0, g: 0, b: 0, a: 0}
+  SunLatOffsetColorer:
+    bgColor: {r: 0, g: 0, b: 0, a: 0}
+    minColor: {r: 0, g: 0, b: 0, a: 0}
+    maxColor: {r: 0, g: 0, b: 0, a: 0}
   paintParameter: 0
 --- !u!1 &705507993
 GameObject:
@@ -543,7 +559,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equator: 0
   distance: 10000
-  latitudeAmplitude: 50
+  latitudeAmplitude: 20
   energyFlux: 75
   dayLight: {r: 1, g: 0.9568628, b: 0.83921576, a: 1}
   twilightLight: {r: 0.7830189, g: 0.39865556, b: 0, a: 1}
@@ -1014,7 +1030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   longitudesPerUnit: 0.01
   latitudesPerUnit: 0.01
-  secondsPerDay: 3
+  secondsPerDay: 2
   daysPerYear: 20
 --- !u!114 &1780939045
 MonoBehaviour:

@@ -63,13 +63,12 @@ public class StandardTime : MonoBehaviour
     int daysPerYear = 20;
 
     public static StandardTime instance { get; private set; }
-
     public int Year { get; private set; }
     public int DayOfYear { get; private set; }
     public float Time { get; private set; }
     public float YearProgres {        
         get {
-            return (DayOfYear + Time / TWO_PI) / daysPerYear;
+            return (DayOfYear + Time / TWO_PI) / daysPerYear;            
         }
     }
 
@@ -78,22 +77,17 @@ public class StandardTime : MonoBehaviour
 
     public float Latitude(Vector3 pos)
     {
-        return DistanceToLatitudes(pos.z - transform.position.z);
+        return pos.z * latitudesPerUnit;
+    }
+
+    public float LatitudeToZ(float lat)
+    {
+        return lat / latitudesPerUnit;
     }
 
     public float Longitude(Vector3 pos)
     {
-        return DistanceToLongitudes(pos.z - transform.position.z);
-    }
-
-    public float DistanceToLatitudes(float units)
-    {
-        return units * latitudesPerUnit;
-    }
-
-    public float DistanceToLongitudes(float units)
-    {
-        return units * longitudesPerUnit;
+        return pos.x * longitudesPerUnit;
     }
 
     public float LocalTime(Vector3 position)
@@ -101,13 +95,14 @@ public class StandardTime : MonoBehaviour
         return Time + Longitude(position) * Mathf.Deg2Rad;
     }
 
-    public float LocalSunInclination(Vector3 positon)
+    public float LocalSunAngleRotationPlane(Vector3 position)
     {
-        var lt = LocalTime(positon);
+        var lt = LocalTime(position);
         if (lt < 0)
         {
             lt += TWO_PI;
-        } else if (lt >= TWO_PI)
+        }
+        else if (lt >= TWO_PI)
         {
             lt -= TWO_PI;
         }
@@ -116,6 +111,16 @@ public class StandardTime : MonoBehaviour
             return lt - HALF_PI;
         }
         return ONE_N_HALF_PI - lt;
+    }
+
+    public float LocalSunAngle(Vector3 position)
+    {
+        // a = arcsin(sin(d)sin(lat) + cos(d)cos(lat)cos(t))
+        var t = LocalTime(position);
+        var lat = Latitude(position) * Mathf.Deg2Rad;
+        var d = Sun.Latitude * Mathf.Deg2Rad;
+        var a = Mathf.Asin(Mathf.Sin(d) * Mathf.Sin(lat) - Mathf.Cos(d) * Mathf.Cos(lat) * Mathf.Cos(t));       
+        return a;
     }
 
     public DateTime LocalDateTime(Vector3 position)

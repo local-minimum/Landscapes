@@ -54,11 +54,11 @@ public class Climatology : MonoBehaviour
         }
     }
 
-    public float SunInclination
+    public float SunAngle
     {
         get
         {            
-            return StandardTime.instance.LocalSunInclination(transform.position);
+            return StandardTime.instance.LocalSunAngle(transform.position);
         }
     }
 
@@ -99,7 +99,7 @@ public class Climatology : MonoBehaviour
 
     void UpdateTemperature()
     {
-        var sunRadiationFactor = Mathf.Max(0, Mathf.Sin(SunInclination));
+        var sunRadiationFactor = Mathf.Max(0, Mathf.Sin(SunAngle));
         Temperature += (sunRadiationFactor * Sun.instance.energyFlux) * Time.deltaTime;
         Temperature -= (Temperature - GlobalClimate.instance.referenceTemperature) * GlobalClimate.instance.surfaceCoolingFactor * Time.deltaTime;
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Metorologist : MonoBehaviour
 {
-    public enum PaintParameter { Shore, Temperature};
+    public enum PaintParameter { Shore, Temperature, SunAngle, SunLatOffset };
 
     struct ImgPos
     {
@@ -41,6 +41,12 @@ public class Metorologist : MonoBehaviour
     ColoringBiColor ShoreColorer;
 
     [SerializeField]
+    ColoringBiColor SunAngleColorer;
+
+    [SerializeField]
+    ColoringBiColor SunLatOffsetColorer;
+
+    [SerializeField]
     PaintParameter paintParameter;
 
     private void OnEnable()
@@ -69,6 +75,8 @@ public class Metorologist : MonoBehaviour
     {
         TempColorer.SetValueRanges(-20, 0, 50);
         ShoreColorer.SetValueRange(-1, 1);
+        SunAngleColorer.SetValueRange(-Mathf.PI, Mathf.PI);
+        SunLatOffsetColorer.SetValueRange(0, 90f);
     }
 
     private void Update()
@@ -83,6 +91,12 @@ public class Metorologist : MonoBehaviour
                 break;
             case PaintParameter.Temperature:
                 Paint(climate => climate.Temperature, TempColorer);
+                break;
+            case PaintParameter.SunAngle:
+                Paint(climate => climate.SunAngle, SunAngleColorer);
+                break;
+            case PaintParameter.SunLatOffset:
+                Paint(climate => Mathf.Abs(climate.Latitude - Sun.Latitude), SunLatOffsetColorer);
                 break;
         }       
     }

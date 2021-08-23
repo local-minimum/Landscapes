@@ -7,17 +7,20 @@ public class Sun : MonoBehaviour
     const float HALF_PI = Mathf.PI / 2f;
 
     [SerializeField]
-    float equator = 0f;
-
-    [SerializeField]
     float distance = 10000f;
 
     [SerializeField]
-    float latitudeAmplitude = 50f;
+    float latitudeAmplitude = 20f;
 
     public float energyFlux = 1;
 
     public static Sun instance { get; private set; }
+
+    public static float Latitude {
+        get {
+            return StandardTime.instance.Latitude(instance.transform.position);
+        }
+    }
 
     Light light;
 
@@ -53,8 +56,8 @@ public class Sun : MonoBehaviour
     private void Update()
     {
         float halfTwilightDuration = twilightDuration * 0.5f;
-        var sunRadians = StandardTime.instance.LocalSunInclination(playerPosition.position);
-        var z = latitudeAmplitude * -1 * Mathf.Cos(StandardTime.instance.YearProgres);
+        var sunRadians = StandardTime.instance.LocalSunAngle(playerPosition.position);
+        var z = StandardTime.instance.LatitudeToZ(latitudeAmplitude * -1 * Mathf.Cos(StandardTime.instance.YearProgres * Mathf.PI * 2));
         var y = distance * Mathf.Sin(sunRadians);
         var x = distance * Mathf.Cos(sunRadians);
         transform.position = new Vector3(x, y, z);
