@@ -9,16 +9,20 @@ public class Climatology : MonoBehaviour
         get; private set;
     }
 
+    public float WaterDepth
+    {
+        get; private set;
+    }
+
+    public bool isMountainous
+    {
+        get; private set;
+    }
+
     public int DistanceToShore
     {
         get; private set;
     }    
-
-    public float Temperature
-    {
-        get;
-        private set;
-    }
     
     public float Latitude
     {
@@ -62,6 +66,34 @@ public class Climatology : MonoBehaviour
         }
     }
 
+    public float Temperature
+    {
+        get
+        {
+            return EnergyAir / (GlobalClimate.instance.air.WattPerCelsius(0)) + GlobalClimate.instance.absoluteZero;
+        }
+
+        private set
+        {
+            var kelvin = value - GlobalClimate.instance.absoluteZero;
+            EnergyAir = kelvin * GlobalClimate.instance.air.WattPerCelsius(0);
+            var eProp = isLand ? (isMountainous ? GlobalClimate.instance.mountain : GlobalClimate.instance.soil) : GlobalClimate.instance.water;
+            EnergyGround = kelvin * eProp.WattPerCelsius(isLand ? GlobalClimate.instance.groundVolumeEnergyConsideration : WaterDepth);
+        }
+    }
+
+    public float EnergyGround
+    {
+        get;
+        private set;
+    }
+
+    public float EnergyAir
+    {
+        get;
+        private set;
+    }
+
     static bool running;
 
     private void OnEnable()
@@ -76,7 +108,7 @@ public class Climatology : MonoBehaviour
 
     private void Start()
     {
-        Temperature = GlobalClimate.instance.referenceTemperature;
+        Temperature = GlobalClimate.instance.annualAverageTemperatur + Random.value * GlobalClimate.instance.refTempSeedingNoise;
     }
 
     private void Geography_OnWorldReady(Geography geography)
@@ -86,6 +118,8 @@ public class Climatology : MonoBehaviour
         }
         var node = GetComponent<GeoNode>();
         isLand = node.Is(Geography.NodeFilter.Land);
+        isMountainous = isLand ? (node.Elevation > GlobalClimate.instance.mountainousElevationThreshold) : false;
+        WaterDepth = isLand ? 0 : -node.Elevation;
         DistanceToShore = node.topology.HasFlag(NodeBase.Topology.Shore) ? 0 : 1;
         Latitude = node.Latitude;
         Longitude = node.Longitude;
@@ -93,14 +127,51 @@ public class Climatology : MonoBehaviour
 
     private void Update()
     {
-        if (!running) return;
-        UpdateTemperature();
+        if (!running) return;        
+        CalculateSunEnergy();
+        RadiateEnergy();
+        DispereseAirEnergy();
+        if (!isLand)
+        {
+            DispereseWaterEnergy();
+        }
     }
 
-    void UpdateTemperature()
+    void CalculateSunEnergy()
     {
-        var sunRadiationFactor = Mathf.Max(0, Mathf.Sin(SunAngle));
-        Temperature += (sunRadiationFactor * Sun.instance.energyFlux) * Time.deltaTime;
-        Temperature -= (Temperature - GlobalClimate.instance.referenceTemperature) * GlobalClimate.instance.surfaceCoolingFactor * Time.deltaTime;
+        var sunAngleFactor = Mathf.Max(0, Mathf.Sin(SunAngle));
+        var sunEnergy = sunAngleFactor * Sun.instance.energyFlux * Time.deltaTime;
+        var sunAngleAtmoFactor = (1 + GlobalClimate.instance.atmosphereReflection * sunAngleFactor);
+        sunEnergy *= (1 - GlobalClimate.instance.atmosphereReflection) * sunAngleAtmoFactor;
+        var atmoAbs = sunEnergy * (1 - GlobalClimate.instance.atmosphereSunAngleCoeff) * sunAngleAtmoFactor;
+        /*
+         * if (isCloudy) {
+         *      sunEnergy *= (1 - GlobalClimate.instance.cloudeReflection);
+         *      atmoAbs *= cloudAbsorptionFactor;
+         * }
+         */
+        sunEnergy -= atmoAbs;
+        var groundAbsorption = sunEnergy * GlobalClimate.instance.groundAbsorpiton;
+        EnergyGround += groundAbsorption;
+        EnergyAir += atmoAbs;
+    }
+
+    void RadiateEnergy()
+    {
+        var groundRadiation = EnergyGround * GlobalClimate.instance.groundRadiation * Time.deltaTime;
+        EnergyGround -= groundRadiation;
+        groundRadiation *= (1 - GlobalClimate.instance.groundSpaceRadiation);
+        EnergyAir += groundRadiation;
+        EnergyAir *= (1 - GlobalClimate.instance.atmosphereRadiation) * Time.deltaTime;
+    }
+
+    void DispereseAirEnergy()
+    {
+        // TODO: Winds and diffusion
+    }
+
+    void DispereseWaterEnergy()
+    {
+        // TODO: Currents and diffusion
     }
 }

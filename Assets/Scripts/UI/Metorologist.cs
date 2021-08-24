@@ -35,18 +35,6 @@ public class Metorologist : MonoBehaviour
     Texture2D tex;
 
     [SerializeField]
-    ColoringTriColor TempColorer;
-
-    [SerializeField]
-    ColoringBiColor ShoreColorer;
-
-    [SerializeField]
-    ColoringBiColor SunAngleColorer;
-
-    [SerializeField]
-    ColoringBiColor SunLatOffsetColorer;
-
-    [SerializeField]
     PaintParameter paintParameter;
 
     private void OnEnable()
@@ -71,14 +59,6 @@ public class Metorologist : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        TempColorer.SetValueRanges(-20, 0, 50);
-        ShoreColorer.SetValueRange(-1, 1);
-        SunAngleColorer.SetValueRange(-Mathf.PI, Mathf.PI);
-        SunLatOffsetColorer.SetValueRange(0, 90f);
-    }
-
     private void Update()
     {
         frame++;
@@ -87,16 +67,16 @@ public class Metorologist : MonoBehaviour
         switch (paintParameter)
         {
             case PaintParameter.Shore:
-                Paint(climate => climate.isLand && climate.DistanceToShore == 0 ? 1 : -1, ShoreColorer);
+                Paint(climate => climate.isLand && climate.DistanceToShore == 0 ? 1 : -1, ColoringPalette.instance.Shore);
                 break;
             case PaintParameter.Temperature:
-                Paint(climate => climate.Temperature, TempColorer);
+                Paint(climate => climate.Temperature, ColoringPalette.instance.Temperature);
                 break;
             case PaintParameter.SunAngle:
-                Paint(climate => climate.SunAngle, SunAngleColorer);
+                Paint(climate => climate.SunAngle, ColoringPalette.instance.SunAngle);
                 break;
             case PaintParameter.SunLatOffset:
-                Paint(climate => Mathf.Abs(climate.Latitude - Sun.Latitude), SunLatOffsetColorer);
+                Paint(climate => Mathf.Abs(climate.Latitude - Sun.Latitude), ColoringPalette.instance.SunLatOffset);
                 break;
         }       
     }

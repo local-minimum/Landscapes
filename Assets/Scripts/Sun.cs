@@ -12,7 +12,8 @@ public class Sun : MonoBehaviour
     [SerializeField]
     float latitudeAmplitude = 20f;
 
-    public float energyFlux = 1;
+    [Tooltip("W/m2")]
+    public float energyFlux = 680;
 
     public static Sun instance { get; private set; }
 

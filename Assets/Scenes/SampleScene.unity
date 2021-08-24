@@ -176,24 +176,7 @@ MonoBehaviour:
   updateEachFrame: 5
   texWidth: 128
   texHeight: 96
-  TempColorer:
-    bgColor: {r: 0, g: 0, b: 0, a: 0}
-    minColor: {r: 0.062898576, g: 0.05958529, b: 0.9716981, a: 1}
-    midColor: {r: 1, g: 0.995283, b: 0.995283, a: 1}
-    maxColor: {r: 0.9716981, g: 0.03208439, b: 0.03208439, a: 1}
-  ShoreColorer:
-    bgColor: {r: 0, g: 0, b: 0, a: 0}
-    minColor: {r: 0, g: 0, b: 0, a: 0}
-    maxColor: {r: 0, g: 0, b: 0, a: 0}
-  SunAngleColorer:
-    bgColor: {r: 0, g: 0, b: 0, a: 0}
-    minColor: {r: 0, g: 0.70051455, b: 1, a: 1}
-    maxColor: {r: 0.9818833, g: 1, b: 0, a: 1}
-  SunLatOffsetColorer:
-    bgColor: {r: 0, g: 0, b: 0, a: 0}
-    minColor: {r: 1, g: 1, b: 1, a: 1}
-    maxColor: {r: 1, g: 0, b: 0, a: 1}
-  paintParameter: 3
+  paintParameter: 1
 --- !u!114 &330964331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,23 +417,6 @@ MonoBehaviour:
   updateEachFrame: 5
   texWidth: 128
   texHeight: 96
-  TempColorer:
-    bgColor: {r: 0, g: 0, b: 0, a: 0}
-    minColor: {r: 0.062898576, g: 0.05958529, b: 0.9716981, a: 1}
-    midColor: {r: 1, g: 0.995283, b: 0.995283, a: 1}
-    maxColor: {r: 0.9716981, g: 0.03208439, b: 0.03208439, a: 1}
-  ShoreColorer:
-    bgColor: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 1}
-    minColor: {r: 0.4431373, g: 0.4431373, b: 0.4431373, a: 1}
-    maxColor: {r: 1, g: 1, b: 1, a: 1}
-  SunAngleColorer:
-    bgColor: {r: 0, g: 0, b: 0, a: 0}
-    minColor: {r: 0, g: 0, b: 0, a: 0}
-    maxColor: {r: 0, g: 0, b: 0, a: 0}
-  SunLatOffsetColorer:
-    bgColor: {r: 0, g: 0, b: 0, a: 0}
-    minColor: {r: 0, g: 0, b: 0, a: 0}
-    maxColor: {r: 0, g: 0, b: 0, a: 0}
   paintParameter: 0
 --- !u!1 &705507993
 GameObject:
@@ -557,10 +523,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be19e978e181daa46ab5138cf169449c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equator: 0
   distance: 10000
   latitudeAmplitude: 20
-  energyFlux: 75
+  energyFlux: 680
   dayLight: {r: 1, g: 0.9568628, b: 0.83921576, a: 1}
   twilightLight: {r: 0.7830189, g: 0.39865556, b: 0, a: 1}
   nightLight: {r: 0, g: 0.005525, b: 0.05882353, a: 1}
@@ -851,6 +816,7 @@ GameObject:
   - component: {fileID: 1600700037}
   - component: {fileID: 1600700036}
   - component: {fileID: 1600700035}
+  - component: {fileID: 1600700039}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -940,6 +906,35 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1600700039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1600700034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa44f5cad6ab4ed40827435ff7c39cb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Temperature:
+    bgColor: {r: 0, g: 0, b: 0, a: 0}
+    minColor: {r: 0, g: 0.03517884, b: 0.990566, a: 1}
+    midColor: {r: 1, g: 1, b: 1, a: 1}
+    maxColor: {r: 1, g: 0, b: 0, a: 1}
+  Shore:
+    bgColor: {r: 0.4339623, g: 0.4278213, b: 0.4278213, a: 1}
+    minColor: {r: 0.43529415, g: 0.427451, b: 0.427451, a: 1}
+    maxColor: {r: 0.8962264, g: 0.89199895, b: 0.89199895, a: 1}
+  SunAngle:
+    bgColor: {r: 0, g: 0, b: 0, a: 0}
+    minColor: {r: 0, g: 0.44454837, b: 0.8773585, a: 1}
+    maxColor: {r: 0.88023627, g: 0.8867924, b: 0, a: 1}
+  SunLatOffset:
+    bgColor: {r: 0, g: 0, b: 0, a: 0}
+    minColor: {r: 1, g: 1, b: 1, a: 1}
+    maxColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &1615930969
 GameObject:
   m_ObjectHideFlags: 0
@@ -1044,9 +1039,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6aae23542ef6b24fb36b36cd07c55ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  referenceTemperature: -42
+  annualAverageTemperatur: 15
+  refTempSeedingNoise: 0.5
   maxLatitudeOffsetFactor: 0.1
   surfaceCoolingFactor: 0.5
+  atmosphereSunAngleCoeff: 0.5
+  atmosphereReflection: 0.06
+  atmosphereAbsorpitonClear: 0.16
+  atmosphereRadiation: 0.64
+  cloudReflection: 0.2
+  cloudAbsorptionFactor: 2
+  groundAbsorpiton: 0.7
+  groundRadiation: 0.4
+  groundSpaceRadiation: 0.06
+  air:
+    estimateMass: 9803.922
+    specificHeatCapacity: 1.006
+    density: 0.00125
+    useEstmatedMass: 1
+  water:
+    estimateMass: 0
+    specificHeatCapacity: 4.182
+    density: 1
+    useEstmatedMass: 0
+  ice:
+    estimateMass: 0
+    specificHeatCapacity: 2
+    density: 0.92
+    useEstmatedMass: 0
+  soil:
+    estimateMass: 0
+    specificHeatCapacity: 1.9
+    density: 1.3
+    useEstmatedMass: 0
+  mountain:
+    estimateMass: 0
+    specificHeatCapacity: 0.75
+    density: 2.66
+    useEstmatedMass: 0
+  groundVolumeEnergyConsideration: 4
+  absoluteZero: -273.15
+  mountainousElevationThreshold: 3.5
 --- !u!1 &1838253587
 GameObject:
   m_ObjectHideFlags: 0
