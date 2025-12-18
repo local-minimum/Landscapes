@@ -1077,7 +1077,7 @@ MonoBehaviour:
     specificHeatCapacity: 0.75
     density: 2.66
     useEstmatedMass: 0
-  groundVolumeEnergyConsideration: 4
+  groundVolumeEnergyConsideration: 40
   absoluteZero: -273.15
   mountainousElevationThreshold: 3.5
 --- !u!1 &1838253587

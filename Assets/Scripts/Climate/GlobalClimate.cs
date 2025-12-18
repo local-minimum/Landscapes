@@ -33,8 +33,8 @@ public class GlobalClimate : MonoBehaviour
     public EnergyProperties ice = new EnergyProperties(2.0f, 0.92f);
     public EnergyProperties soil = new EnergyProperties(1.9f, 1.3f);
     public EnergyProperties mountain = new EnergyProperties(0.75f, 2.66f);
-    // we only calculate a m2 so lets consider 4m depth
-    public float groundVolumeEnergyConsideration = 4;
+    // we only calculate a m2 so lets consider 40m depth
+    public float groundVolumeEnergyConsideration = 40;
     public float absoluteZero = -273.15f;
 
     public float mountainousElevationThreshold = 3.5f;
